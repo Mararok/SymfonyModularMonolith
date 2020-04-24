@@ -8,26 +8,10 @@ use DateTimeInterface;
 
 class Task implements \JsonSerializable
 {
-    /**
-     * @var int
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var DateTimeInterface
-     */
-    private $createdAt;
-
-    /**
-     * @var TaskStatus
-     */
-    private $status;
-
+    private int $id;
+    private string $name;
+    private DateTimeInterface $createdAt;
+    private TaskStatus $status;
 
     public function __construct(int $id, string $name, DateTimeInterface $createdAt, TaskStatus $status)
     {

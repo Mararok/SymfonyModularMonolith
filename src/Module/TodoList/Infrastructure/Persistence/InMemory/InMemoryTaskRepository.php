@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Module\TodoList\Infrastructure\Persistence;
+namespace App\Module\TodoList\Infrastructure\Persistence\InMemory;
 
 
 use App\Module\TodoList\Domain\Task;
@@ -9,10 +9,7 @@ use App\Module\TodoList\Domain\TaskRepository;
 
 class InMemoryTaskRepository implements TaskRepository
 {
-    /**
-     * @var array
-     */
-    private $list;
+    private array $list;
 
     public function __construct(array $list)
     {

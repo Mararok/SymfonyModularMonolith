@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Module\TodoList\Application\Api\Controller;
+namespace App\Module\TodoList\Infrastructure\Rest\Controller;
 
-use App\Module\TodoList\Domain\TaskRepository;
+use App\Module\TodoList\Application\TaskService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,11 +11,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TaskController extends AbstractController
 {
-    private TaskRepository $repository;
+    private TaskService $service;
 
-    public function __construct(TaskRepository $repository)
+    public function __construct(TaskService $service)
     {
-        $this->repository = $repository;
+        $this->service = $service;
     }
 
     /**
@@ -24,7 +24,7 @@ class TaskController extends AbstractController
      */
     public function list(): Response
     {
-        $entities = iterator_to_array($this->repository->findAll());
+        $entities = iterator_to_array($this->service->findAll());
         return JsonResponse::create($entities)
             ->setEncodingOptions(JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_PRETTY_PRINT);
     }
@@ -36,7 +36,7 @@ class TaskController extends AbstractController
      */
     public function getById(int $id): Response
     {
-        $entity = $this->repository->findById($id);
+        $entity = $this->service->findById($id);
         if (!$entity) {
             throw new NotFoundHttpException('The task does not exist');
         }

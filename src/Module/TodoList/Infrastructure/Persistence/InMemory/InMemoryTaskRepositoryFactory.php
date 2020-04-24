@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Module\TodoList\Infrastructure\Persistence;
+namespace App\Module\TodoList\Infrastructure\Persistence\InMemory;
 
 
 use App\Module\TodoList\Domain\Task;

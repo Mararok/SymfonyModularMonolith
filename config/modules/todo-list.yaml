@@ -1,7 +1,7 @@
 services:
   App\Module\TodoList\Domain\TaskRepository:
-    factory: '@App\Module\TodoList\Infrastructure\Persistence\InMemoryTaskRepositoryFactory'
+    factory: '@App\Module\TodoList\Infrastructure\Persistence\InMemory\InMemoryTaskRepositoryFactory'
 
-  App\Module\TodoList\Application\Api\Controller\:
-    resource: '../../src/Module/TodoList/Application/Api/Controller'
+  App\Module\TodoList\Infrastructure\Rest\Controller\:
+    resource: '../../src/Module/TodoList/Infrastructure/Rest/Controller'
     tags: ['controller.service_arguments']

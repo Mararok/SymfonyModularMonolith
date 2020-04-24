@@ -1,5 +1,5 @@
-controllers:
-    resource: '../../src/Module/TodoList/Application/Api/Controller'
+todolist:
+    resource: '../../src/Module/TodoList/Infrastructure/Rest/Controller/'
     type: annotation
 
 kernel:
