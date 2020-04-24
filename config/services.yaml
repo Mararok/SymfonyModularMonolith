@@ -1,0 +1,13 @@
+
+parameters:
+
+imports:
+    - { resource: modules/*.yaml }
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php,Controller}'

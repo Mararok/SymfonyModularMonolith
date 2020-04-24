@@ -1,0 +1,7 @@
+services:
+  App\Module\TodoList\Domain\TodoListItemRepository:
+    factory: '@App\Module\TodoList\Infrastructure\Persistence\InMemoryTodoListItemRepositoryFactory'
+
+  App\Module\TodoList\Application\Api\Controller\:
+    resource: '../../src/Module/TodoList/Application/Api/Controller'
+    tags: ['controller.service_arguments']
