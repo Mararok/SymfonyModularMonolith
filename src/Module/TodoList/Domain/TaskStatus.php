@@ -6,7 +6,7 @@ namespace App\Module\TodoList\Domain;
 
 use MyCLabs\Enum\Enum;
 
-class TodoListItemStatus extends Enum
+class TaskStatus extends Enum
 {
     private const TODO = "todo";
     private const IN_PROGRESS = "in_progress";

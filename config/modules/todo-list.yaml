@@ -1,6 +1,6 @@
 services:
-  App\Module\TodoList\Domain\TodoListItemRepository:
-    factory: '@App\Module\TodoList\Infrastructure\Persistence\InMemoryTodoListItemRepositoryFactory'
+  App\Module\TodoList\Domain\TaskRepository:
+    factory: '@App\Module\TodoList\Infrastructure\Persistence\InMemoryTaskRepositoryFactory'
 
   App\Module\TodoList\Application\Api\Controller\:
     resource: '../../src/Module/TodoList/Application/Api/Controller'

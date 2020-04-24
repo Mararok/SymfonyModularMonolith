@@ -2,24 +2,24 @@
 
 namespace App\Module\TodoList\Application\Api\Controller;
 
-use App\Module\TodoList\Domain\TodoListItemRepository;
+use App\Module\TodoList\Domain\TaskRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TodoListItemsController extends AbstractController
+class TodoListTasksController extends AbstractController
 {
-    private TodoListItemRepository $repository;
+    private TaskRepository $repository;
 
-    public function __construct(TodoListItemRepository $repository)
+    public function __construct(TaskRepository $repository)
     {
         $this->repository = $repository;
     }
 
     /**
-     * @Route("/todolist/items", name="todolist_items_list")
+     * @Route("/todolist/tasks", name="todolist_tasks_list")
      * @return Response
      */
     public function list(): Response
@@ -30,7 +30,7 @@ class TodoListItemsController extends AbstractController
     }
 
     /**
-     * @Route("/todolist/items/{id}", name="todolist_items_get_by_id")
+     * @Route("/todolist/tasks/{id}", name="todolist_tasks_get_by_id")
      * @param int $id
      * @return Response
      */
@@ -38,7 +38,7 @@ class TodoListItemsController extends AbstractController
     {
         $entity = $this->repository->findById($id);
         if (!$entity) {
-            throw new NotFoundHttpException('The item does not exist');
+            throw new NotFoundHttpException('The task does not exist');
         }
 
         return JsonResponse::create($entity)

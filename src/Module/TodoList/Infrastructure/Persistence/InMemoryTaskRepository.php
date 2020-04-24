@@ -4,10 +4,10 @@
 namespace App\Module\TodoList\Infrastructure\Persistence;
 
 
-use App\Module\TodoList\Domain\TodoListItem;
-use App\Module\TodoList\Domain\TodoListItemRepository;
+use App\Module\TodoList\Domain\Task;
+use App\Module\TodoList\Domain\TaskRepository;
 
-class InMemoryTodoListItemRepository implements TodoListItemRepository
+class InMemoryTaskRepository implements TaskRepository
 {
     /**
      * @var array
@@ -27,7 +27,7 @@ class InMemoryTodoListItemRepository implements TodoListItemRepository
         return new \ArrayIterator($this->list);
     }
 
-    public function findById(int $id): ?TodoListItem
+    public function findById(int $id): ?Task
     {
         return isset($this->list[$id]) ? $this->list[$id] : null;
     }
