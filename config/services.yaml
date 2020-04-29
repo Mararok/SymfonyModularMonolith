@@ -8,11 +8,9 @@ services:
 
     App\Core\:
         resource: '../src/Core/*'
-        exclude: '../src/Core/{Maker}'
 
-    App\Core\Maker\:
-        resource: '../src/Core/Maker/*'
-        tags: ['maker.command']
+    App\Core\Tenant\Doctrine\TenantConnectionContextService:
+        arguments: ['@App\Core\Tenant\Doctrine\TenantConnectionParamsProvider', '@doctrine.orm.tenant_entity_manager']
 
     App\Module\:
         resource: '../src/Module/*'

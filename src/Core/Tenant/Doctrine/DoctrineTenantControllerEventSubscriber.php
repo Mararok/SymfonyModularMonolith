@@ -1,21 +1,19 @@
 <?php
 
 
-namespace App\Core\Doctrine;
+namespace App\Core\Tenant\Doctrine;
 
 
 use App\Core\Tenant\TenantContextController;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class DoctrineControllerEventSubscriber implements EventSubscriberInterface
+class DoctrineTenantControllerEventSubscriber implements EventSubscriberInterface
 {
+    private TenantConnectionContextService $connectionContextService;
 
-    private ConnectionContextService $connectionContextService;
-
-    public function __construct(ConnectionContextService $connectionContextService)
+    public function __construct(TenantConnectionContextService $connectionContextService)
     {
         $this->connectionContextService = $connectionContextService;
     }
@@ -23,7 +21,6 @@ class DoctrineControllerEventSubscriber implements EventSubscriberInterface
     public function onKernelController(ControllerEvent $event)
     {
         $controller = $event->getController();
-
         if (is_array($controller)) {
             $controller = $controller[0];
         }

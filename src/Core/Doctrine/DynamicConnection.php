@@ -11,10 +11,9 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 
-class ConnectionWrapper extends Connection
+class DynamicConnection extends Connection
 {
     private string $connectionId;
-
     private Closure $internalParamsChanger;
 
     public function __construct(

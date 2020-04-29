@@ -23,28 +23,61 @@ class DoctrineModuleConfigsLoader
     public function load(): void
     {
         $moduleConfigs = $this->loadModuleConfigs();
-        $this->loadModulesTypes($moduleConfigs);
-        $moduleMappings = $this->generateModulesMapping(array_keys($moduleConfigs));
+        $this->registerModulesEnumTypes($moduleConfigs);
+        $this->container->loadFromExtension("doctrine", $this->generateDoctrineConfig($moduleConfigs));
+    }
 
-        $this->container->loadFromExtension('doctrine', [
-            // @TODO more dynamic
-            'dbal' => [
-                'port' => '10003',
-                'user' => 'root',
-                'password' => 'test',
-                'wrapper_class' => ConnectionWrapper::class,
+    private function generateDoctrineConfig(array $moduleConfigs): array
+    {
+        $systemModulesMappings = [];
+        $tenantModulesMappings = [];
+        foreach ($moduleConfigs as $moduleName => $moduleConfig) {
+            $mapping = $this->generateModuleMapping($moduleName);
+            if ($moduleConfig["isTenantModule"]) {
+                $tenantModulesMappings[$moduleName] = $mapping;
+            } else {
+                $systemModulesMappings[$moduleName] = $mapping;
+            }
+        }
+
+        return [
+            "dbal" => [
+                "default_connection" => "system",
+                "connections" => [
+                    "system" => [ // @TODO change to env
+                        "port" => "10003",
+                        "user" => "root",
+                        "password" => "test",
+                    ],
+                    "tenant" => [ // dynamic
+                        "port" => "10003",
+                        "user" => "root",
+                        "password" => "test",
+                        "wrapper_class" => DynamicConnection::class,
+                    ]
+                ],
             ],
-            'orm' => [
-                'auto_mapping' => true,
-                'mappings' => $moduleMappings,
+
+            "orm" => [
+                "default_entity_manager" => "system",
+                "entity_managers" => [
+                    "system" => [
+                        "connection" => "system",
+                        "mappings" => $systemModulesMappings,
+                    ],
+                    "tenant" => [
+                        "connection" => "tenant",
+                        "mappings" => $tenantModulesMappings
+                    ],
+                ],
             ],
-        ]);
+        ];
     }
 
     private function loadModuleConfigs(): array
     {
         $finder = new Finder();
-        $finder->files()->name('doctrine.php');
+        $finder->files()->name("doctrine.php");
 
         $modules = [];
         /** @var SplFileInfo $moduleConfigFile */
@@ -55,25 +88,18 @@ class DoctrineModuleConfigsLoader
         return $modules;
     }
 
-    private function generateModulesMapping(array $moduleNames): array
+    private function generateModuleMapping($moduleName): array
     {
-        $moduleMappings = [];
-        foreach ($moduleNames as $moduleName) {
-            if (file_exists(dirname(dirname(__DIR__)) . "/src/Module/$moduleName/Infrastructure/Persistence/Doctrine")) {
-                $moduleMappings[$moduleName] = [
-                    'type' => 'annotation',
-                    'dir' => "%kernel.project_dir%/src/Module/$moduleName/Infrastructure/Persistence/Doctrine/Entity",
-                    'is_bundle' => false,
-                    'prefix' => "App\Module/$moduleName/Infrastructure/Persistence/Doctrine/Entity",
-                    'alias' => "$moduleName",
-                ];
-            }
-        }
-
-        return $moduleMappings;
+        return [
+            "type" => "annotation",
+            "dir" => "%kernel.project_dir%/src/Module/$moduleName/Infrastructure/Persistence/Doctrine/Entity",
+            "is_bundle" => false,
+            "prefix" => 'App\Module\$moduleName\Infrastructure\Persistence\Doctrine\Entity',
+            "alias" => "$moduleName",
+        ];
     }
 
-    private function loadModulesTypes(array $moduleConfigs): void
+    private function registerModulesEnumTypes(array $moduleConfigs): void
     {
         foreach ($moduleConfigs as $moduleConfig) {
             foreach ($moduleConfig["enumTypes"] as $enumType => $enumTypeClass) {

@@ -4,11 +4,11 @@
 namespace App\Core\Tenant\Doctrine;
 
 
-use App\Core\Doctrine\ConnectionParamsProvider;
-
-class TenantConnectionParamsProvider implements ConnectionParamsProvider
+class TenantConnectionParamsProvider
 {
     private array $baseParams;
+
+    private string $dbnamePrefix = "tenant_";
 
     public function __construct()
     {
@@ -22,14 +22,14 @@ class TenantConnectionParamsProvider implements ConnectionParamsProvider
     }
 
 
-    public function get(string $connectionId): array
+    public function get(string $tenantId): array
     {
         $params = $this->baseParams;
-        $params["dbname"] = $this->getDatabaseName($connectionId);
+        $params["dbname"] = $this->getDatabaseName($tenantId);
         return $params;
     }
 
-    private function getDatabaseName(string $connectionId) {
-        return ($connectionId === "system") ? "system" : "tenant_$connectionId";
+    private function getDatabaseName(string $tenantId) {
+        return $this->dbnamePrefix.$tenantId;
     }
 }
