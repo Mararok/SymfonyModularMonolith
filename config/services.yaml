@@ -1,6 +1,7 @@
 
 imports:
     - { resource: modules/**/services.yaml }
+
 services:
     _defaults:
         autowire: true
@@ -16,3 +17,6 @@ services:
         resource: '../src/Module/*'
         exclude: '../src/*/{Doctrine/Entity}'
 
+    doctrine.dbal.connection_factory:
+        class: App\Core\Doctrine\DoctrineConnectionFactory
+        arguments: ['%doctrine.dbal.connection_factory.types%', '%kernel.project_dir%/config/modules']

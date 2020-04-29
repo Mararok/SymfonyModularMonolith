@@ -4,6 +4,8 @@
 namespace App\Module\TodoList\Infrastructure\Persistence\Doctrine\Entity;
 
 
+use App\Module\TodoList\Domain\Task;
+use App\Module\TodoList\Domain\TaskStatus;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -11,9 +13,9 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
 /**
- * @Entity()
+ * @Entity(repositoryClass="App\Module\TodoList\Infrastructure\Persistence\Doctrine\Entity\DoctrineTaskRepository")
  * @Table(
- *     name="Tasks"
+ *     name="TodoList_Tasks"
  * )
  **/
 class TaskDoctrine
@@ -22,32 +24,78 @@ class TaskDoctrine
      * @Id
      * @Column(type="integer", options={"unsigned": true})
      * @GeneratedValue
-     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @Column(type="string")
-     * @var string
      */
-    private $name;
+    private string $name;
 
     /**
-     * @Column(type="integer", options={"unsigned": true})
-     * @var int
+     * @Column(type="date_immutable")
      */
-    private $createdAt;
+    private \DateTimeInterface $createdAt;
 
     /**
-     * @Column(type="integer", options={"unsigned": true})
-     * @var int
+     * @Column(type="App\Module\TodoList\Domain\TaskStatus")
      */
-    private $expires;
+    private TaskStatus $status;
 
-    /**
-     * @Column(type="integer", options={"unsigned": true})
-     * @var int
-     */
-    private $currentCount;
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getStatus(): TaskStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(TaskStatus $status): self
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    public function fromDomain(Task $domain): self
+    {
+        $doctrine = new self();
+        $doctrine->id = $domain->getId();
+        return $doctrine
+            ->setName($domain->getName())
+            ->setCreatedAt($domain->getCreatedAt())
+            ->setStatus($domain->getStatus());
+    }
+
+    public function toDomain(): Task
+    {
+        return new Task(
+            $this->getId(),
+            $this->getName(),
+            $this->getCreatedAt(),
+            $this->getStatus());
+    }
 }

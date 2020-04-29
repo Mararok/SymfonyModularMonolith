@@ -3,8 +3,6 @@
 
 namespace App\Core\Doctrine;
 
-
-use Acelaya\Doctrine\Type\PhpEnumType;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -22,8 +20,7 @@ class ModularDoctrineConfigLoader
 
     public function load(): void
     {
-        $moduleConfigs = $this->loadModuleConfigs();
-        $this->registerModulesEnumTypes($moduleConfigs);
+        $moduleConfigs = self::loadModuleConfigs($this->modulesConfigPath);
         $this->container->loadFromExtension('doctrine', $this->generateDoctrineConfig($moduleConfigs));
     }
 
@@ -62,11 +59,9 @@ class ModularDoctrineConfigLoader
                         'server_version' => '5.7',
                         'charset' => 'utf8mb4',
                         'wrapper_class' => DynamicConnection::class,
-
                     ]
                 ],
             ],
-
             'orm' => [
                 'default_entity_manager' => 'system',
                 'entity_managers' => [
@@ -83,14 +78,14 @@ class ModularDoctrineConfigLoader
         ];
     }
 
-    private function loadModuleConfigs(): array
+    public static function loadModuleConfigs(string $modulesConfigPath): array
     {
         $finder = new Finder();
         $finder->files()->name('doctrine.php');
 
         $modules = [];
         /** @var SplFileInfo $moduleConfigFile */
-        foreach ($finder->in($this->modulesConfigPath) as $moduleConfigFile) {
+        foreach ($finder->in($modulesConfigPath) as $moduleConfigFile) {
             $moduleName = basename($moduleConfigFile->getPath());
             $modules[$moduleName] = include($moduleConfigFile->getPathname());
         }
@@ -108,14 +103,5 @@ class ModularDoctrineConfigLoader
         ];
     }
 
-    private function registerModulesEnumTypes(array $moduleConfigs): void
-    {
-        foreach ($moduleConfigs as $moduleConfig) {
-            foreach ($moduleConfig['enumTypes'] as $enumType => $enumTypeClass) {
-                if (!PhpEnumType::hasType($enumType)) {
-                    PhpEnumType::registerEnumType($enumType, $enumTypeClass);
-                }
-            }
-        }
-    }
+
 }

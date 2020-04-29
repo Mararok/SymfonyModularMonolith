@@ -6,6 +6,7 @@ namespace App\Core\Doctrine;
 
 use Closure;
 
+use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
@@ -27,7 +28,9 @@ class DynamicConnection extends Connection
         $this->connectionId = "";
         $this->params = $params;
         $this->internalParamsChanger = Closure::bind(function (Connection $c, $newParams) {
-            $c->params = $newParams;
+            foreach ($newParams as $param => $value) {
+                $c->params[$param] = $value;
+            }
         }, $this, $this);
 
     }
@@ -38,6 +41,5 @@ class DynamicConnection extends Connection
             $this->close();
             ($this->internalParamsChanger)($this, $params);
         }
-
     }
 }

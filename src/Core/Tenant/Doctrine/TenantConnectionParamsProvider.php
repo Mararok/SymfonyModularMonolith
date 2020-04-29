@@ -18,6 +18,9 @@ class TenantConnectionParamsProvider
             "port" => "10003",
             "user" => "root",
             "password" => "test",
+            'driver' => 'pdo_mysql',
+            'server_version' => '5.7',
+            'charset' => 'utf8mb4',
         ];
     }
 
