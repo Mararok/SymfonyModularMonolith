@@ -31,7 +31,7 @@ class MakeModule extends AbstractMaker
     {
         $command
             ->setDescription("Creates a new module in project")
-            ->addArgument("module-name", InputArgument::OPTIONAL, "Choose a name for your module ",)
+            ->addArgument("module-name", InputArgument::REQUIRED, "Choose a name for your module ",)
         ;
     }
 
