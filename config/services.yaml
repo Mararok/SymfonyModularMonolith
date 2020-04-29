@@ -1,13 +1,20 @@
 
-parameters:
-
 imports:
-    - { resource: modules/*.yaml }
+    - { resource: modules/**/services.yaml }
 services:
     _defaults:
         autowire: true
         autoconfigure: true
 
-    App\:
-        resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php,Controller}'
+    App\Core\:
+        resource: '../src/Core/*'
+        exclude: '../src/Core/{Maker}'
+
+    App\Core\Maker\:
+        resource: '../src/Core/Maker/*'
+        tags: ['maker.command']
+
+    App\Module\:
+        resource: '../src/Module/*'
+        exclude: '../src/*/{Doctrine/Entity}'
+

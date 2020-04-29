@@ -3,5 +3,5 @@ services:
     factory: '@App\Module\TodoList\Infrastructure\Persistence\InMemory\InMemoryTaskRepositoryFactory'
 
   App\Module\TodoList\Infrastructure\Rest\Controller\:
-    resource: '../../src/Module/TodoList/Infrastructure/Rest/Controller'
+    resource: '%kernel.project_dir%/src/Module/TodoList/Infrastructure/Rest/Controller'
     tags: ['controller.service_arguments']

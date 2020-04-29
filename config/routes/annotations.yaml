@@ -1,5 +1,9 @@
-todolist:
-    resource: '../../src/Module/TodoList/Infrastructure/Rest/Controller/'
+api-tenants:
+    resource: '../../src/Module/*/Infrastructure/Rest/Controller/*'
+    name_prefix: api_tenants
+    prefix: /api/tenants/{tenantId}
+    requirements:
+        tenantId: '\d+'
     type: annotation
 
 kernel:
