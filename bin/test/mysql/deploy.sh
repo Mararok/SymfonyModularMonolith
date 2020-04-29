@@ -13,7 +13,7 @@ docker service create \
   --env "MYSQL_ROOT_PASSWORD_FILE=/run/secrets/${MYSQL_PASSWORD_SECRET}" \
   ${MYSQL_SERVICE_IMAGE}
 
-dockerutil::print_success "created service: $MYSQL_SERVICE"
+dockerutil::print_success "Created service: ${MYSQL_SERVICE}, access localhost:${MYSQL_SERVICE_PUBLISH_PORT}"
 
 docker service create \
   --name "${MYSQL_ADMIN_SERVICE}" \
@@ -22,4 +22,5 @@ docker service create \
   --env PMA_HOST=$MYSQL_SERVICE \
   ${MYSQL_ADMIN_SERVICE_IMAGE} >/dev/null
 
-dockerutil::print_success "created service: ${MYSQL_ADMIN_SERVICE}"
+dockerutil::print_success "Created service: ${MYSQL_ADMIN_SERVICE}, access http://localhost:${MYSQL_ADMIN_PUBLISH_PORT}"
+
