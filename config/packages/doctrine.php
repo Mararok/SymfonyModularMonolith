@@ -1,6 +1,6 @@
 <?php
 
-use App\Core\Doctrine\DoctrineModuleConfigsLoader;
+use App\Core\Doctrine\ModularDoctrineConfigLoader;
 
-$loader = new DoctrineModuleConfigsLoader($container, dirname(__DIR__)."/modules");
+$loader = new ModularDoctrineConfigLoader($container, dirname(__DIR__)."/modules");
 $loader->load();

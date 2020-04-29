@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
-class DoctrineModuleConfigsLoader
+class ModularDoctrineConfigLoader
 {
     private ContainerBuilder $container;
     private string $modulesConfigPath;
@@ -24,7 +24,7 @@ class DoctrineModuleConfigsLoader
     {
         $moduleConfigs = $this->loadModuleConfigs();
         $this->registerModulesEnumTypes($moduleConfigs);
-        $this->container->loadFromExtension("doctrine", $this->generateDoctrineConfig($moduleConfigs));
+        $this->container->loadFromExtension('doctrine', $this->generateDoctrineConfig($moduleConfigs));
     }
 
     private function generateDoctrineConfig(array $moduleConfigs): array
@@ -33,7 +33,7 @@ class DoctrineModuleConfigsLoader
         $tenantModulesMappings = [];
         foreach ($moduleConfigs as $moduleName => $moduleConfig) {
             $mapping = $this->generateModuleMapping($moduleName);
-            if ($moduleConfig["isTenantModule"]) {
+            if ($moduleConfig['isTenantModule']) {
                 $tenantModulesMappings[$moduleName] = $mapping;
             } else {
                 $systemModulesMappings[$moduleName] = $mapping;
@@ -41,33 +41,42 @@ class DoctrineModuleConfigsLoader
         }
 
         return [
-            "dbal" => [
-                "default_connection" => "system",
-                "connections" => [
-                    "system" => [ // @TODO change to env
-                        "port" => "10003",
-                        "user" => "root",
-                        "password" => "test",
+            'dbal' => [
+                'default_connection' => 'system',
+                'connections' => [
+                    'system' => [ // @TODO change to env
+                        'dbname' => 'system',
+                        'port' => '10003',
+                        'user' => 'root',
+                        'password' => 'test',
+                        'driver' => 'pdo_mysql',
+                        'server_version' => '5.7',
+                        'charset' => 'utf8mb4',
+
                     ],
-                    "tenant" => [ // dynamic
-                        "port" => "10003",
-                        "user" => "root",
-                        "password" => "test",
-                        "wrapper_class" => DynamicConnection::class,
+                    'tenant' => [ // dynamic
+                        'port' => '10003',
+                        'user' => 'root',
+                        'password' => 'test',
+                        'driver' => 'pdo_mysql',
+                        'server_version' => '5.7',
+                        'charset' => 'utf8mb4',
+                        'wrapper_class' => DynamicConnection::class,
+
                     ]
                 ],
             ],
 
-            "orm" => [
-                "default_entity_manager" => "system",
-                "entity_managers" => [
-                    "system" => [
-                        "connection" => "system",
-                        "mappings" => $systemModulesMappings,
+            'orm' => [
+                'default_entity_manager' => 'system',
+                'entity_managers' => [
+                    'system' => [
+                        'connection' => 'system',
+                        'mappings' => $systemModulesMappings,
                     ],
-                    "tenant" => [
-                        "connection" => "tenant",
-                        "mappings" => $tenantModulesMappings
+                    'tenant' => [
+                        'connection' => 'tenant',
+                        'mappings' => $tenantModulesMappings
                     ],
                 ],
             ],
@@ -77,7 +86,7 @@ class DoctrineModuleConfigsLoader
     private function loadModuleConfigs(): array
     {
         $finder = new Finder();
-        $finder->files()->name("doctrine.php");
+        $finder->files()->name('doctrine.php');
 
         $modules = [];
         /** @var SplFileInfo $moduleConfigFile */
@@ -91,18 +100,18 @@ class DoctrineModuleConfigsLoader
     private function generateModuleMapping($moduleName): array
     {
         return [
-            "type" => "annotation",
-            "dir" => "%kernel.project_dir%/src/Module/$moduleName/Infrastructure/Persistence/Doctrine/Entity",
-            "is_bundle" => false,
-            "prefix" => 'App\Module\$moduleName\Infrastructure\Persistence\Doctrine\Entity',
-            "alias" => "$moduleName",
+            'type' => 'annotation',
+            'dir' => '%kernel.project_dir%/src/Module/' . $moduleName . '/Infrastructure/Persistence/Doctrine/Entity',
+            'is_bundle' => false,
+            'prefix' => 'App\\Module\\' . $moduleName . '\\Infrastructure\\Persistence\\Doctrine\\Entity',
+            'alias' => $moduleName,
         ];
     }
 
     private function registerModulesEnumTypes(array $moduleConfigs): void
     {
         foreach ($moduleConfigs as $moduleConfig) {
-            foreach ($moduleConfig["enumTypes"] as $enumType => $enumTypeClass) {
+            foreach ($moduleConfig['enumTypes'] as $enumType => $enumTypeClass) {
                 if (!PhpEnumType::hasType($enumType)) {
                     PhpEnumType::registerEnumType($enumType, $enumTypeClass);
                 }
