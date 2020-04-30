@@ -11,6 +11,8 @@ export IMAGE_BUILD_TARGET = production_$(SUBPROJECT)
 export IMAGE_SUBPROJECT = $(SUBPROJECT)
 export IMAGE_BUILD_CONTEXT = .
 
+export ACCOUNT ?= 0
+
 ifeq "$(ENVIRONMENT)" "test"
 LOCAL_REGISTRY_PORT = 5000
 export IMAGE_NAMESPACE = localhost:$(LOCAL_REGISTRY_PORT)
@@ -56,6 +58,16 @@ endif
 endif
 endif
 
+# SYMFONY
+## Clears Symfony cache
+sf_cc:
+	@php bin/console cache:clear
+
+## Runs localc Symfony server
+sf_start_local_server:
+	symfony server:start --no-ansi
+# END SYMFONY
+
 ## Builds and pushes selected subproject image
 deploy_image:
 	@bash bin/deploy_image.sh
@@ -94,3 +106,4 @@ test_clean:
 endif
 
 endif
+
