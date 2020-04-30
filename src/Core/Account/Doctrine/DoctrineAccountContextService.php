@@ -4,10 +4,12 @@
 namespace App\Core\Account\Doctrine;
 
 
-use App\Core\Doctrine\DynamicConnection;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Core\Account\AccountContextChangeEvent;
+use App\Core\Doctrine\DynamicConnection;
 
-class AccountConnectionContextService
+class DoctrineAccountContextService implements EventSubscriberInterface
 {
     private AccountConnectionParamsProvider $connectionParamsProvider;
     private EntityManagerInterface $entityManager;
@@ -18,8 +20,12 @@ class AccountConnectionContextService
         $this->entityManager = $entityManager;
     }
 
+    public function onAccountContextChange(AccountContextChangeEvent $event): void
+    {
+        $this->switchAccount($event->getAccountId());
+    }
 
-    public function switchConnection(string $accountId)
+    public function switchAccount(int $accountId): void
     {
         $connection = $this->entityManager->getConnection();
 
@@ -28,7 +34,14 @@ class AccountConnectionContextService
             $this->entityManager->clear();
             $connection->switchConnection($accountId, $this->connectionParamsProvider->get($accountId));
         } else {
-            throw new \LogicException("To switch connection to selected account, connection object must be instance of ".DynamicConnection::class);
+            throw new \LogicException("To switch connection to selected account, connection object must be instance of " . DynamicConnection::class);
         }
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            AccountContextChangeEvent::class => "onAccountContextChange"
+        ];
     }
 }

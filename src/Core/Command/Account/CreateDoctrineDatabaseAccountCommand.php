@@ -18,10 +18,8 @@ class CreateDoctrineDatabaseAccountCommand extends AccountCommand
             ->setDescription("Creates account mysql database");
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function executeCommand(InputInterface $input, OutputInterface $output)
     {
-        parent::execute($input, $output);
-
         $command = $this->getApplication()->find("doctrine:database:create");
         $createDatabaseArguments = new ArrayInput([
             "command" => "doctrine:database:create",

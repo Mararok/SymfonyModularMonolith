@@ -1,25 +1,28 @@
 <?php
 
 
-namespace App\Core\Account\Doctrine;
+namespace App\Core\Account;
 
 
-use App\Core\Account\AccountContextController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class DoctrineAccountControllerEventSubscriber implements EventSubscriberInterface
+class AccountContextControllerEventSubscriber implements EventSubscriberInterface
 {
-    private AccountConnectionContextService $connectionContextService;
+    private AccountContextService $service;
 
-    public function __construct(AccountConnectionContextService $connectionContextService)
+    public function __construct(AccountContextService $service)
     {
-        $this->connectionContextService = $connectionContextService;
+        $this->service = $service;
     }
 
     public function onKernelController(ControllerEvent $event)
     {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+
         $controller = $event->getController();
         if (is_array($controller)) {
             $controller = $controller[0];
@@ -27,7 +30,7 @@ class DoctrineAccountControllerEventSubscriber implements EventSubscriberInterfa
 
         if ($controller instanceof AccountContextController) {
             $accountId = $event->getRequest()->attributes->get(AccountContextController::ACCOUNT_ID_ROUTE_PARAMETER);
-            $this->connectionContextService->switchConnection($accountId);
+            $this->service->switchAccount($accountId);
         }
     }
 

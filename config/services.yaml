@@ -10,7 +10,7 @@ services:
     App\Core\:
         resource: '../src/Core/*'
 
-    App\Core\Account\Doctrine\AccountConnectionContextService:
+    App\Core\Account\Doctrine\DoctrineAccountContextService:
         arguments: ['@App\Core\Account\Doctrine\AccountConnectionParamsProvider', '@doctrine.orm.account_entity_manager']
 
     App\Module\:

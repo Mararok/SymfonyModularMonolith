@@ -7,7 +7,6 @@ namespace App\Core\Account\Doctrine;
 class AccountConnectionParamsProvider
 {
     private array $baseParams;
-
     private string $dbnamePrefix = "account_";
 
     public function __construct()

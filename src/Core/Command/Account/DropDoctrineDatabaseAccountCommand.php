@@ -20,10 +20,8 @@ class DropDoctrineDatabaseAccountCommand extends AccountCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function executeCommand(InputInterface $input, OutputInterface $output)
     {
-        parent::execute($input, $output);
-
         $command = $this->getApplication()->find("doctrine:database:drop");
         $createDatabaseArguments = new ArrayInput([
             "command" => "doctrine:schema:create",
