@@ -27,6 +27,8 @@ class TenantConnectionContextService
         $connection = $this->entityManager->getConnection();
 
         if ($connection instanceof DynamicConnection) {
+            $this->entityManager->flush();
+            $this->entityManager->clear();
             $connection->switchConnection($tenantId, $this->connectionParamsProvider->get($tenantId));
         } else {
             throw new \LogicException("To switch connection to selected tenant, connection object must be instance of ".DynamicConnection::class);
