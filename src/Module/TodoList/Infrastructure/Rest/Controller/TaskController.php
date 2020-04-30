@@ -2,7 +2,7 @@
 
 namespace App\Module\TodoList\Infrastructure\Rest\Controller;
 
-use App\Core\Tenant\TenantContextController;
+use App\Core\Account\AccountContextController;
 use App\Module\TodoList\Application\TaskService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TaskController extends AbstractController implements TenantContextController
+class TaskController extends AbstractController implements AccountContextController
 {
     private TaskService $service;
 

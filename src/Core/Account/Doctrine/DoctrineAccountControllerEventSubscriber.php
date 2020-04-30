@@ -1,19 +1,19 @@
 <?php
 
 
-namespace App\Core\Tenant\Doctrine;
+namespace App\Core\Account\Doctrine;
 
 
-use App\Core\Tenant\TenantContextController;
+use App\Core\Account\AccountContextController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class DoctrineTenantControllerEventSubscriber implements EventSubscriberInterface
+class DoctrineAccountControllerEventSubscriber implements EventSubscriberInterface
 {
-    private TenantConnectionContextService $connectionContextService;
+    private AccountConnectionContextService $connectionContextService;
 
-    public function __construct(TenantConnectionContextService $connectionContextService)
+    public function __construct(AccountConnectionContextService $connectionContextService)
     {
         $this->connectionContextService = $connectionContextService;
     }
@@ -25,9 +25,9 @@ class DoctrineTenantControllerEventSubscriber implements EventSubscriberInterfac
             $controller = $controller[0];
         }
 
-        if ($controller instanceof TenantContextController) {
-            $tenantId = $event->getRequest()->attributes->get(TenantContextController::TENANT_ID_ROUTE_PARAMETER);
-            $this->connectionContextService->switchConnection($tenantId);
+        if ($controller instanceof AccountContextController) {
+            $accountId = $event->getRequest()->attributes->get(AccountContextController::ACCOUNT_ID_ROUTE_PARAMETER);
+            $this->connectionContextService->switchConnection($accountId);
         }
     }
 

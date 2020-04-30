@@ -1,22 +1,22 @@
 <?php
 
 
-namespace App\Core\Command\Tenant;
+namespace App\Core\Command\Account;
 
 
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DropTenantMysqlDatabaseCommand extends TenantCommand
+class DropDoctrineDatabaseAccountCommand extends AccountCommand
 {
 
     protected function configure()
     {
         parent::configure();
         $this
-            ->setName("app:tenant:doctrine:drop")
-            ->setDescription("Drops tenant mysql database")
+            ->setName("doctrine:drop")
+            ->setDescription("Drops account mysql database")
         ;
     }
 
@@ -27,7 +27,7 @@ class DropTenantMysqlDatabaseCommand extends TenantCommand
         $command = $this->getApplication()->find("doctrine:database:drop");
         $createDatabaseArguments = new ArrayInput([
             "command" => "doctrine:schema:create",
-            "--connection"  => "tenant",
+            "--connection"  => "account",
             "--force" => true,
         ]);
         $command->run($createDatabaseArguments, $output);

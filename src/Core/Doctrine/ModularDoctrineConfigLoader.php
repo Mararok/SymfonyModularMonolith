@@ -27,11 +27,11 @@ class ModularDoctrineConfigLoader
     private function generateDoctrineConfig(array $moduleConfigs): array
     {
         $systemModulesMappings = [];
-        $tenantModulesMappings = [];
+        $accountModulesMappings = [];
         foreach ($moduleConfigs as $moduleName => $moduleConfig) {
             $mapping = $this->generateModuleMapping($moduleName);
-            if ($moduleConfig['isTenantModule']) {
-                $tenantModulesMappings[$moduleName] = $mapping;
+            if ($moduleConfig['isAccountModule']) {
+                $accountModulesMappings[$moduleName] = $mapping;
             } else {
                 $systemModulesMappings[$moduleName] = $mapping;
             }
@@ -51,7 +51,7 @@ class ModularDoctrineConfigLoader
                         'charset' => 'utf8mb4',
 
                     ],
-                    'tenant' => [ // dynamic
+                    'account' => [ // dynamic
                         'port' => '10003',
                         'user' => 'root',
                         'password' => 'test',
@@ -69,9 +69,9 @@ class ModularDoctrineConfigLoader
                         'connection' => 'system',
                         'mappings' => $systemModulesMappings,
                     ],
-                    'tenant' => [
-                        'connection' => 'tenant',
-                        'mappings' => $tenantModulesMappings
+                    'account' => [
+                        'connection' => 'account',
+                        'mappings' => $accountModulesMappings
                     ],
                 ],
             ],

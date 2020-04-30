@@ -1,22 +1,21 @@
 <?php
 
 
-namespace App\Core\Command\Tenant;
+namespace App\Core\Command\Account;
 
 
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CreateDoctrineDatabaseTenantCommand extends TenantCommand
+class CreateDoctrineDatabaseAccountCommand extends AccountCommand
 {
-
     protected function configure()
     {
         parent::configure();
         $this
-            ->setName("app:tenant:doctrine:create")
-            ->setDescription("Creates tenant mysql database");
+            ->setName("doctrine:create")
+            ->setDescription("Creates account mysql database");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -26,7 +25,7 @@ class CreateDoctrineDatabaseTenantCommand extends TenantCommand
         $command = $this->getApplication()->find("doctrine:database:create");
         $createDatabaseArguments = new ArrayInput([
             "command" => "doctrine:database:create",
-            "--connection" => "tenant",
+            "--connection" => "account",
         ]);
         if ($command->run($createDatabaseArguments, $output) !== 0) {
             return 255;
@@ -35,7 +34,7 @@ class CreateDoctrineDatabaseTenantCommand extends TenantCommand
         $command = $this->getApplication()->find("doctrine:schema:create");
         $createDatabaseArguments = new ArrayInput([
             "command" => "doctrine:schema:create",
-            "--em" => "tenant",
+            "--em" => "account",
         ]);
         if ($command->run($createDatabaseArguments, $output) !== 0) {
             return 255;

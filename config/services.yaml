@@ -10,8 +10,8 @@ services:
     App\Core\:
         resource: '../src/Core/*'
 
-    App\Core\Tenant\Doctrine\TenantConnectionContextService:
-        arguments: ['@App\Core\Tenant\Doctrine\TenantConnectionParamsProvider', '@doctrine.orm.tenant_entity_manager']
+    App\Core\Account\Doctrine\AccountConnectionContextService:
+        arguments: ['@App\Core\Account\Doctrine\AccountConnectionParamsProvider', '@doctrine.orm.account_entity_manager']
 
     App\Module\:
         resource: '../src/Module/*'

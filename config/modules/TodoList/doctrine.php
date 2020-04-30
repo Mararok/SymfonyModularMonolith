@@ -3,7 +3,7 @@
 use App\Module\TodoList\Domain\TaskStatus;
 
 return [
-    "isTenantModule" => true,
+    "isAccountModule" => true,
     "enumTypes" => [
         TaskStatus::class
     ]

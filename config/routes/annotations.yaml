@@ -1,9 +1,9 @@
 api-tenants:
     resource: '../../src/Module/*/Infrastructure/Rest/Controller/*'
-    name_prefix: api_tenants
-    prefix: /api/tenants/{tenantId}
+    name_prefix: api_accounts_
+    prefix: /api/accounts/{accountId}
     requirements:
-        tenantId: '\d+'
+        accountId: '\d+'
     type: annotation
 
 kernel:

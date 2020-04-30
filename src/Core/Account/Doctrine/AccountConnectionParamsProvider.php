@@ -1,14 +1,14 @@
 <?php
 
 
-namespace App\Core\Tenant\Doctrine;
+namespace App\Core\Account\Doctrine;
 
 
-class TenantConnectionParamsProvider
+class AccountConnectionParamsProvider
 {
     private array $baseParams;
 
-    private string $dbnamePrefix = "tenant_";
+    private string $dbnamePrefix = "account_";
 
     public function __construct()
     {
@@ -25,14 +25,14 @@ class TenantConnectionParamsProvider
     }
 
 
-    public function get(string $tenantId): array
+    public function get(string $accountId): array
     {
         $params = $this->baseParams;
-        $params["dbname"] = $this->getDatabaseName($tenantId);
+        $params["dbname"] = $this->getDatabaseName($accountId);
         return $params;
     }
 
-    private function getDatabaseName(string $tenantId) {
-        return $this->dbnamePrefix.$tenantId;
+    private function getDatabaseName(string $accountId) {
+        return $this->dbnamePrefix.$accountId;
     }
 }
