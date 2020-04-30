@@ -22,5 +22,5 @@ docker service create \
   --env PMA_HOST=$MYSQL_SERVICE \
   ${MYSQL_ADMIN_SERVICE_IMAGE} >/dev/null
 
-dockerutil::print_success "Created service: ${MYSQL_ADMIN_SERVICE}, access http://localhost:${MYSQL_ADMIN_PUBLISH_PORT}"
+dockerutil::print_success "Created service: ${MYSQL_ADMIN_SERVICE}, access http://localhost:${MYSQL_ADMIN_PUBLISH_PORT} user: ${MYSQL_USER} password: ${TEST_PASSWORD}"
 
