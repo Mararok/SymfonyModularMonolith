@@ -1,22 +1,54 @@
-
 imports:
-    - { resource: modules/**/services.yaml }
+  - { resource: modules/**/services.yaml }
 
 services:
-    _defaults:
-        autowire: true
-        autoconfigure: true
+  _defaults:
+    autowire: true
+    autoconfigure: true
 
-    App\Core\:
-        resource: '../src/Core/*'
+  _instanceof:
 
-    App\Core\Account\Doctrine\DoctrineAccountContextService:
-        arguments: ['@App\Core\Account\Doctrine\AccountConnectionParamsProvider', '@doctrine.orm.account_entity_manager']
+    App\Core\Message\Command\CommandHandler:
+      public: true
+      tags:
+        - { name: messenger.message_handler, bus: messenger.bus.command }
 
-    App\Module\:
-        resource: '../src/Module/*'
-        exclude: '../src/*/{Doctrine/Entity}'
+    App\Core\Message\Event\EventHandler:
+      public: true
+      tags:
+        - { name: messenger.message_handler, bus: messenger.bus.event.async }
 
-    doctrine.dbal.connection_factory:
-        class: App\Core\Doctrine\DoctrineConnectionFactory
-        arguments: ['%doctrine.dbal.connection_factory.types%', '%kernel.project_dir%/config/modules']
+    App\Core\Message\Query\QueryHandler:
+      public: true
+      tags:
+        - { name: messenger.message_handler, bus: messenger.bus.query }
+
+
+
+  App\Core\:
+    resource: '../src/Core/*'
+
+  App\Core\Account\Doctrine\DoctrineAccountContextService:
+    arguments: ['@App\Core\Account\Doctrine\AccountConnectionParamsProvider', '@doctrine.orm.account_entity_manager']
+
+  App\Module\:
+    resource: '../src/Module/*'
+    exclude: '../src/*/{Doctrine/Entity}'
+
+  doctrine.dbal.connection_factory:
+    class: App\Core\Doctrine\DoctrineConnectionFactory
+    arguments: ['%doctrine.dbal.connection_factory.types%', '%kernel.project_dir%/config/modules']
+
+  App\Core\Message\Command\CommandBus:
+    arguments:
+      - '@messenger.bus.command'
+
+  App\Core\Message\Event\EventBus:
+    arguments:
+      - '@messenger.bus.event.async'
+
+  App\Core\Message\Query\QueryBus:
+    arguments:
+      - '@messenger.bus.query'
+
+

@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
 /**
- * @Entity(repositoryClass="App\Module\TodoList\Infrastructure\Persistence\Doctrine\Entity\DoctrineTaskRepository")
+ * @Entity(repositoryClass="TaskDoctrineRepository")
  * @Table(
  *     name="TodoList_Tasks"
  * )
@@ -33,7 +33,7 @@ class TaskDoctrine
     private string $name;
 
     /**
-     * @Column(type="date_immutable")
+     * @Column(type="datetime_immutable")
      */
     private \DateTimeInterface $createdAt;
 
@@ -80,7 +80,7 @@ class TaskDoctrine
         return $this;
     }
 
-    public function fromDomain(Task $domain): self
+    public static function fromDomain(Task $domain): self
     {
         $doctrine = new self();
         $doctrine->id = $domain->getId();

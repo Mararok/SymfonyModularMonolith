@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\Module\TodoList\Application;
+namespace App\Module\TodoList\Application\Query\Task\FindAll;
 
 
-use App\Module\TodoList\Domain\Task;
+use App\Core\Message\Query\QueryHandler;
 use App\Module\TodoList\Domain\TaskRepository;
 
-class TaskService
+class FindAllQueryHandler implements QueryHandler
 {
     private TaskRepository $repository;
 
@@ -16,12 +16,7 @@ class TaskService
         $this->repository = $repository;
     }
 
-    public function findById(int $id): Task
-    {
-        return $this->repository->findById($id);
-    }
-
-    public function findAll(): \Iterator
+    public function __invoke(FindAllQuery $query): \Iterator
     {
         return $this->repository->findAll();
     }

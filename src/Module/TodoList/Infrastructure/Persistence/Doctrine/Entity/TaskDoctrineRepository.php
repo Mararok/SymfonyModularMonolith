@@ -8,15 +8,22 @@ use App\Module\TodoList\Domain\Task;
 use App\Module\TodoList\Domain\TaskRepository;
 use Doctrine\ORM\EntityRepository;
 
-class DoctrineTaskRepository extends EntityRepository implements TaskRepository
+class TaskDoctrineRepository extends EntityRepository implements TaskRepository
 {
+
+    public function create(Task $task): void
+    {
+        $doctrineEntity = TaskDoctrine::fromDomain($task);
+        $this->getEntityManager()->persist($doctrineEntity);
+        $this->getEntityManager()->flush($doctrineEntity);
+    }
 
     public function findAll(): \Iterator
     {
         $doctrineEntities = parent::findAll();
         $domainEntities = [];
         foreach ($doctrineEntities as $doctrineEntity) {
-            $domainEntities[] =  $doctrineEntity->toDomain();
+            $domainEntities[] = $doctrineEntity->toDomain();
         }
         return new \ArrayIterator($domainEntities);
     }
