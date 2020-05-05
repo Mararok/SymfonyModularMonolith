@@ -1,9 +1,5 @@
 services:
   App\Module\TodoList\Domain\TaskRepository:
-      factory: ['@doctrine.orm.account_entity_manager', getRepository]
-      arguments:
-        - 'App\Module\TodoList\Infrastructure\Persistence\Doctrine\Entity\TaskDoctrine'
-
-  App\Module\TodoList\Infrastructure\Rest\Controller\:
-    resource: '%kernel.project_dir%/src/Module/TodoList/Infrastructure/Rest/Controller'
-    tags: ['controller.service_arguments']
+    factory: ['@doctrine.orm.account_entity_manager', getRepository]
+    arguments:
+      - 'App\Module\TodoList\Infrastructure\Persistence\Doctrine\Entity\TaskDoctrine'

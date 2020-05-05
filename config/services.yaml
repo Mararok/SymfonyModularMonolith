@@ -1,5 +1,5 @@
 imports:
-  - { resource: modules/**/services.yaml }
+  - { resource: ./modules/**/services.yaml }
 
 services:
   _defaults:
@@ -23,6 +23,9 @@ services:
       tags:
         - { name: messenger.message_handler, bus: messenger.bus.query }
 
+    App\Core\Rest\Controller\Controller:
+      public: true
+      tags: ['controller.service_arguments']
 
 
   App\Core\:
