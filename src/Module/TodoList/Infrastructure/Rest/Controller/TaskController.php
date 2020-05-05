@@ -8,12 +8,12 @@ use App\Core\Rest\Controller\CommandQueryController;
 use App\Module\TodoList\Application\Command\Task\CreateTask\CreateCommand;
 use App\Module\TodoList\Application\Query\Task\FindAll\FindAllQuery;
 use App\Module\TodoList\Application\Query\Task\FindById\FindByIdQuery;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Swagger\Annotations as SWG;
 use Throwable;
+
 
 /**
  * @Route("/todo-list/tasks", name="todolist_tasks_")
@@ -22,6 +22,10 @@ class TaskController extends CommandQueryController implements AccountContextCon
 {
     /**
      * @Route("", name="create", methods={"POST"})
+     * @SWG\Response(
+     *     response=201,
+     *     description="Creates task",
+     * )
      * @param Request $request
      * @return Response
      */

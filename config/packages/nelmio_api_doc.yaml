@@ -1,0 +1,15 @@
+nelmio_api_doc:
+  documentation:
+    host: 127.0.0.1:8000 # todo use env
+    schemes: [http, https]
+    info:
+      title: Simple Symfony Modular Monolith
+      description: Simple Symfony Modular Monolith
+      version: 1.0.0
+  areas:
+    default:
+      path_patterns: [ ^/api(?!/doc) ]
+    account:
+      path_patterns: [ ^/api/account ]
+    admin:
+      path_patterns: [ ^/api/admin ]
