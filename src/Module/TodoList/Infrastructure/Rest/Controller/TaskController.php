@@ -22,9 +22,20 @@ class TaskController extends CommandQueryController implements AccountContextCon
 {
     /**
      * @Route("", name="create", methods={"POST"})
+     *
+     * @SWG\Parameter(
+     *      name="body",
+     *      in="body",
+     *      format="application/json",
+     *      required=true,
+     *      @SWG\Schema(
+     *          type="object",
+     *          @SWG\Property(property="name", type="string", example="test_task")
+     *      )
+     * )
      * @SWG\Response(
-     *     response=201,
-     *     description="Creates task",
+     *      response=201,
+     *      description="Creates task",
      * )
      * @param Request $request
      * @return Response
