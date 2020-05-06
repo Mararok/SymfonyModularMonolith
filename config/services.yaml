@@ -34,10 +34,6 @@ services:
   App\Core\Account\Doctrine\DoctrineAccountContextService:
     arguments: ['@App\Core\Account\Doctrine\AccountConnectionParamsProvider', '@doctrine.orm.account_entity_manager']
 
-  App\Module\:
-    resource: '../src/Module/*'
-    exclude: '../src/*/{Doctrine/Entity}'
-
   doctrine.dbal.connection_factory:
     class: App\Core\Doctrine\DoctrineConnectionFactory
     arguments: ['%doctrine.dbal.connection_factory.types%', '%kernel.project_dir%/config/modules']
@@ -54,4 +50,7 @@ services:
     arguments:
       - '@messenger.bus.query'
 
+  App\Module\:
+    resource: '../src/Module/*'
+    exclude: '../src/*/{Doctrine/Entity}'
 

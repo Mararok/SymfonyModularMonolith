@@ -17,6 +17,7 @@ use Throwable;
 
 /**
  * @Route("/todo-list/tasks", name="todolist_tasks_")
+ * @SWG\Tag(name="TodoList")
  */
 class TaskController extends CommandQueryController implements AccountContextController
 {

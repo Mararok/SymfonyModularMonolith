@@ -2,7 +2,7 @@
 
 namespace App\Module\TodoList\Application\Query\Task\FindAll;
 
-use App\Module\TodoList\Domain\TaskRepository;
+use App\Module\TodoList\Domain\Repository\TaskRepository;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 

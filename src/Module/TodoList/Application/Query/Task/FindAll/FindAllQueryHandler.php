@@ -5,7 +5,7 @@ namespace App\Module\TodoList\Application\Query\Task\FindAll;
 
 
 use App\Core\Message\Query\QueryHandler;
-use App\Module\TodoList\Domain\TaskRepository;
+use App\Module\TodoList\Domain\Repository\TaskRepository;
 
 class FindAllQueryHandler implements QueryHandler
 {

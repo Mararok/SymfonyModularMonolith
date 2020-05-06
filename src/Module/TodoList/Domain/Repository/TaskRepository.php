@@ -1,8 +1,10 @@
 <?php
 
 
-namespace App\Module\TodoList\Domain;
+namespace App\Module\TodoList\Domain\Repository;
 
+
+use App\Module\TodoList\Domain\Entity\Task;
 
 interface TaskRepository
 {

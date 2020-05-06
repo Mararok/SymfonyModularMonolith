@@ -6,9 +6,9 @@ namespace App\Module\TodoList\Application\Command\Task\Create;
 
 use App\Core\Message\Command\CommandHandler;
 use App\Module\TodoList\Application\Command\Task\CreateTask\CreateCommand;
-use App\Module\TodoList\Domain\Task;
-use App\Module\TodoList\Domain\TaskRepository;
-use App\Module\TodoList\Domain\TaskStatus;
+use App\Module\TodoList\Domain\Entity\Task;
+use App\Module\TodoList\Domain\Repository\TaskRepository;
+use App\Module\TodoList\Domain\ValueObject\TaskStatus;
 
 class CreateCommandHandler implements CommandHandler
 {

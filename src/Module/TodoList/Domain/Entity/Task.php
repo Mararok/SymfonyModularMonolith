@@ -1,9 +1,10 @@
 <?php
 
 
-namespace App\Module\TodoList\Domain;
+namespace App\Module\TodoList\Domain\Entity;
 
 
+use App\Module\TodoList\Domain\ValueObject\TaskStatus;
 use DateTimeInterface;
 
 class Task implements \JsonSerializable

@@ -4,8 +4,8 @@
 namespace App\Module\TodoList\Infrastructure\Persistence\Doctrine\Entity;
 
 
-use App\Module\TodoList\Domain\Task;
-use App\Module\TodoList\Domain\TaskRepository;
+use App\Module\TodoList\Domain\Entity\Task;
+use App\Module\TodoList\Domain\Repository\TaskRepository;
 use Doctrine\ORM\EntityRepository;
 
 class TaskDoctrineRepository extends EntityRepository implements TaskRepository

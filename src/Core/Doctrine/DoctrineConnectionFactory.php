@@ -14,7 +14,8 @@ class DoctrineConnectionFactory extends ConnectionFactory
         $this->registerModulesEnumTypes($modulesConfigPath);
     }
 
-    private function registerModulesEnumTypes($modulesConfigPath) {
+    private function registerModulesEnumTypes($modulesConfigPath)
+    {
         foreach (ModularDoctrineConfigLoader::loadModuleConfigs($modulesConfigPath) as $moduleId => $config) {
             foreach ($config["enumTypes"] as $enumTypeClass) {
                 if (!DoctrineEnumType::hasType($enumTypeClass)) {

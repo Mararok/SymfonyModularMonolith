@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Core\Doctrine\DoctrineDomainRepositoryImplementCompilerPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -23,6 +24,11 @@ class Kernel extends BaseKernel
                 yield new $class();
             }
         }
+    }
+
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new DoctrineDomainRepositoryImplementCompilerPass());
     }
 
     public function getProjectDir(): string

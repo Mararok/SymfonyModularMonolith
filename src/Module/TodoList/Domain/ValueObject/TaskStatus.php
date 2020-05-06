@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Module\TodoList\Domain;
+namespace App\Module\TodoList\Domain\ValueObject;
 
 
 use MyCLabs\Enum\Enum;

@@ -1,5 +1,3 @@
 services:
-  App\Module\TodoList\Domain\TaskRepository:
-    factory: ['@doctrine.orm.account_entity_manager', getRepository]
-    arguments:
-      - 'App\Module\TodoList\Infrastructure\Persistence\Doctrine\Entity\TaskDoctrine'
+  App\Module\TodoList\Domain\Repository\TaskRepository:
+    tags: ['app.core.doctrine.domain_repository_implementation']

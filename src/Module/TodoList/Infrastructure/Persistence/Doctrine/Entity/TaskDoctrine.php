@@ -4,8 +4,8 @@
 namespace App\Module\TodoList\Infrastructure\Persistence\Doctrine\Entity;
 
 
-use App\Module\TodoList\Domain\Task;
-use App\Module\TodoList\Domain\TaskStatus;
+use App\Module\TodoList\Domain\Entity\Task;
+use App\Module\TodoList\Domain\ValueObject\TaskStatus;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -38,7 +38,7 @@ class TaskDoctrine
     private \DateTimeInterface $createdAt;
 
     /**
-     * @Column(type="App\Module\TodoList\Domain\TaskStatus")
+     * @Column(type="@App\Module\TodoList\Domain\ValueObject\TaskStatus")
      */
     private TaskStatus $status;
 
