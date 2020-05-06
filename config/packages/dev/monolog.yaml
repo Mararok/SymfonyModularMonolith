@@ -1,0 +1,9 @@
+monolog:
+    handlers:
+        stdout:
+            type: stream
+            level: debug
+            process_psr_3_messages: true
+            channels: ["!event", "!doctrine", "!console"]
+            formatter: 'monolog.formatter.json'
+            path: 'php://stdout'

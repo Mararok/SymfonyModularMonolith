@@ -1,0 +1,14 @@
+monolog:
+    handlers:
+        main:
+            type: fingers_crossed
+            action_level: error
+            handler: stdout
+            excluded_http_codes: [404, 405]
+            buffer_size: 50
+        stdout:
+            type: stream
+            process_psr_3_messages: true
+            channels: ["!event", "!doctrine", "!console"]
+            formatter: 'monolog.formatter.json'
+            path: 'php://stdout'

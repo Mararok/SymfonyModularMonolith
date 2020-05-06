@@ -15,6 +15,7 @@ class EventBus extends MessageBusBase
      */
     public function handle(Event $event): void
     {
+        $this->getLogger()->info("Handling event", ["event" => $event]);
         $this->dispatchInMessenger($event);
     }
 }

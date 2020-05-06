@@ -17,6 +17,7 @@ class QueryBus extends MessageBusBase
      */
     public function handle(Query $query)
     {
+        $this->getLogger()->info("Handling query", ["query" => $query]);
         $envelope = $this->dispatchInMessenger($query);
         /** @var HandledStamp $stamp */
         $stamp = $envelope->last(HandledStamp::class);
