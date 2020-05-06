@@ -15,7 +15,7 @@ class TaskDoctrineRepository extends EntityRepository implements TaskRepository
     {
         $doctrineEntity = TaskDoctrine::fromDomain($task);
         $this->getEntityManager()->persist($doctrineEntity);
-        $this->getEntityManager()->flush($doctrineEntity);
+        $this->getEntityManager()->flush();
     }
 
     public function findAll(): \Iterator
