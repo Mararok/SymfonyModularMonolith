@@ -1,4 +1,4 @@
-api-tenants:
+api-accounts:
     resource: '../../src/Module/*/Infrastructure/Rest/Controller/*'
     name_prefix: api_accounts_
     prefix: /api/accounts/{accountId}
