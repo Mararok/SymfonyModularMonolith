@@ -1,9 +1,7 @@
 <?php
 
-namespace Module\TodoList\Application\Query\Task\FindAll;
+namespace App\Module\TodoList\Application\Query\Task\FindAll;
 
-use App\Module\TodoList\Application\Query\Task\FindAll\FindAllQuery;
-use App\Module\TodoList\Application\Query\Task\FindAll\FindAllQueryHandler;
 use App\Module\TodoList\Domain\TaskRepository;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
