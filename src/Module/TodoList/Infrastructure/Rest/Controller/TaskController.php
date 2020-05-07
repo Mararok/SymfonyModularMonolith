@@ -23,7 +23,6 @@ class TaskController extends CommandQueryController implements AccountContextCon
 {
     /**
      * @Route("", name="create", methods={"POST"})
-     *
      * @SWG\Parameter(
      *      name="body",
      *      in="body",
@@ -49,6 +48,10 @@ class TaskController extends CommandQueryController implements AccountContextCon
 
     /**
      * @Route("", name="list", methods={"GET"})
+     * @SWG\Response(
+     *      response=200,
+     *      description="Returns task list",
+     * )
      * @return Response
      * @throws Throwable
      */
@@ -61,6 +64,15 @@ class TaskController extends CommandQueryController implements AccountContextCon
 
     /**
      * @Route("/{id}", name="get_by_id", methods={"GET"})
+     *
+     * @SWG\Response(
+     *      response=200,
+     *      description="Returns selected task by id",
+     * )
+     * @SWG\Response(
+     *      response=404,
+     *      description="When selected task doesn't exists",
+     * )
      * @param int $id
      * @return Response
      * @throws Throwable
