@@ -38,7 +38,7 @@ class TaskDoctrine
     private \DateTimeInterface $createdAt;
 
     /**
-     * @Column(type="@App\Module\TodoList\Domain\ValueObject\TaskStatus")
+     * @Column(type="App\Module\TodoList\Domain\ValueObject\TaskStatus")
      */
     private TaskStatus $status;
 
