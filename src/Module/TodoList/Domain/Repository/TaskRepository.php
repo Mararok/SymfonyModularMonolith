@@ -9,6 +9,10 @@ use App\Module\TodoList\Domain\Entity\Task;
 interface TaskRepository
 {
     public function create(Task $task): void;
-    public function findAll(): \Iterator;
-    public function findById(int $id): ?Task;
+
+    /**
+     * @return \Iterator
+     */
+    public function findAll();
+    public function findById(int $id): Task;
 }

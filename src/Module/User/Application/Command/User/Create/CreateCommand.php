@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Module\TodoList\Application\Command\Task\Create;
+namespace App\Module\User\Application\Command\User\Create;
 
 
 use App\Core\Message\Command\Command;

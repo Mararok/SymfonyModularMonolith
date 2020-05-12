@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Module\TodoList\Infrastructure\Persistence\Doctrine\Entity;
+namespace App\Module\TodoList\Infrastructure\Persistence\Doctrine;
 
 
 use App\Module\TodoList\Domain\Entity\Task;

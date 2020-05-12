@@ -96,9 +96,9 @@ class ModularDoctrineConfigLoader
     {
         return [
             'type' => 'annotation',
-            'dir' => '%kernel.project_dir%/src/Module/' . $moduleName . '/Infrastructure/Persistence/Doctrine/Entity',
+            'dir' => '%kernel.project_dir%/src/Module/' . $moduleName . '/Infrastructure/Persistence/Doctrine',
             'is_bundle' => false,
-            'prefix' => 'App\\Module\\' . $moduleName . '\\Infrastructure\\Persistence\\Doctrine\\Entity',
+            'prefix' => 'App\\Module\\' . $moduleName . '\\Infrastructure\\Persistence\\Doctrine',
             'alias' => $moduleName,
         ];
     }

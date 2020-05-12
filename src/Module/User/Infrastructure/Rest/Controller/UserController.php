@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Module\TodoList\Infrastructure\Rest\Controller;
+namespace App\Module\User\Infrastructure\Rest\Controller;
 
 use App\Core\Account\AccountContextController;
 use App\Core\Domain\Exception\NotFoundException;
 use App\Core\Rest\Controller\CommandQueryController;
-use App\Module\TodoList\Application\Command\Task\Create\CreateCommand;
-use App\Module\TodoList\Application\Query\Task\FindAll\FindAllQuery;
-use App\Module\TodoList\Application\Query\Task\FindById\FindByIdQuery;
+use App\Module\User\Application\Command\User\Create\CreateCommand;
+use App\Module\User\Application\Query\User\FindAll\FindAllQuery;
+use App\Module\User\Application\Query\User\FindById\FindByIdQuery;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,10 +16,10 @@ use Throwable;
 
 
 /**
- * @Route("/todo-list/tasks", name="todolist_tasks_")
- * @SWG\Tag(name="TodoList")
+ * @Route("/user/users", name="user_users_")
+ * @SWG\Tag(name="User")
  */
-class TaskController extends CommandQueryController implements AccountContextController
+class UserController extends CommandQueryController implements AccountContextController
 {
     /**
      * @Route("", name="create", methods={"POST"})
@@ -35,7 +35,7 @@ class TaskController extends CommandQueryController implements AccountContextCon
      * )
      * @SWG\Response(
      *      response=201,
-     *      description="Creates task",
+     *      description="Creates user",
      * )
      * @param Request $request
      * @return Response
