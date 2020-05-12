@@ -4,7 +4,7 @@
 namespace App\Core\Domain\Exception;
 
 
-class NotFoundException extends \Exception
+class NotFoundException extends DomainException
 {
     public static function create()
     {

@@ -1,0 +1,3 @@
+services:
+  App\Module\User\Domain\Repository\UserRepository:
+    tags: ['app.core.doctrine.domain_repository_implementation']

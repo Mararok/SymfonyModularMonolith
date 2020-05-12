@@ -29,7 +29,6 @@ class DoctrineDomainRepositoryImplementCompilerPass implements CompilerPassInter
 
     private function setupImplementationInService(string $serviceId, string $moduleName, string $domainEntityName, ContainerBuilder $container)
     {
-        file_put_contents("test", $serviceId);
         $def = $container->findDefinition($serviceId);
         $def->setFactory([new Reference('doctrine.orm.account_entity_manager'), 'getRepository']);
         $def->setArguments([$this->generateDoctrineEntityName($moduleName, $domainEntityName)]);
@@ -37,6 +36,6 @@ class DoctrineDomainRepositoryImplementCompilerPass implements CompilerPassInter
 
     private function generateDoctrineEntityName(string $moduleName, string $domainEntityName)
     {
-        return 'App\\Module\\' . $moduleName . '\\Infrastructure\\Persistence\Doctrine\Entity\\' . $domainEntityName . "Doctrine";
+        return 'App\\Module\\' . $moduleName . '\\Infrastructure\\Persistence\Doctrine\\' . $domainEntityName . "Doctrine";
     }
 }

@@ -17,7 +17,7 @@ class FindByIdQueryHandler implements QueryHandler
         $this->repository = $repository;
     }
 
-    public function __invoke(FindByIdQuery $query): ?Task
+    public function __invoke(FindByIdQuery $query): Task
     {
         return $this->repository->findById($query->getId());
     }
