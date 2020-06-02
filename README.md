@@ -40,7 +40,7 @@ Symfony w projekcie jest tak skonfigurowane, że z automatu zarejestruje wszystk
     - immutable - tylko gettery
   - **\<nazwa-komendy>CommandHandler**
     - implementuje: **App\Core\Message\Command\CommandHandler**
-    - **__invoke(<nazwa-komendy>Command $command): void**
+    - **__invoke(<\nazwa-komendy>Command $command): void**
 - **Query** - zawiera wszystkie zapytania do domeny, które można zadać w danym module, struktura: podfolder z nazwą komendy i klasy:
   - **\<nazwa-zapytania>Query**
     - implementuje: **App\Core\Message\Query\Query**,
@@ -48,7 +48,7 @@ Symfony w projekcie jest tak skonfigurowane, że z automatu zarejestruje wszystk
     - immutable - tylko gettery
   - **\<nazwa-zapytania>QueryHandler**
     - implementuje: **App\Core\Message\Query\QueryHandler**
-    - **__invoke(<nazwa-zapytania>Query $query): void**
+    - **__invoke(<\nazwa-zapytania>Query $query): void**
 
 ## Infrastructure
 Zawiera wszystko co potrzebne do kontaktu ze światem zewnętrznym(obsługa bazy danych, rest api).
