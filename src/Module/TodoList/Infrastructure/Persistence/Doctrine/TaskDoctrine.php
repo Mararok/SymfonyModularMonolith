@@ -6,6 +6,7 @@ namespace App\Module\TodoList\Infrastructure\Persistence\Doctrine;
 
 use App\Module\TodoList\Domain\Entity\Task;
 use App\Module\TodoList\Domain\ValueObject\TaskStatus;
+use App\Module\User\Domain\SharedKernel\UserId;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -41,6 +42,13 @@ class TaskDoctrine
      * @Column(type="App\Module\TodoList\Domain\ValueObject\TaskStatus")
      */
     private TaskStatus $status;
+
+    /**
+     * @Id
+     * @Column(type="integer", options={"unsigned": true})
+     * @GeneratedValue
+     */
+    private int $assignedUserId;
 
     public function getId(): int
     {

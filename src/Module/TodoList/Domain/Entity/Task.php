@@ -5,6 +5,7 @@ namespace App\Module\TodoList\Domain\Entity;
 
 
 use App\Module\TodoList\Domain\ValueObject\TaskStatus;
+use App\Module\User\Domain\SharedKernel\UserId;
 use DateTimeInterface;
 
 class Task implements \JsonSerializable
@@ -13,13 +14,12 @@ class Task implements \JsonSerializable
     private string $name;
     private DateTimeInterface $createdAt;
     private TaskStatus $status;
+    private UserId $assignedUserId;
 
-    public function __construct(int $id, string $name, DateTimeInterface $createdAt, TaskStatus $status)
+    public function __construct(int $id, DateTimeInterface $createdAt)
     {
         $this->id = $id;
-        $this->name = $name;
         $this->createdAt = $createdAt;
-        $this->status = $status;
     }
 
     public function getId(): int
@@ -32,6 +32,11 @@ class Task implements \JsonSerializable
         return $this->name;
     }
 
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
     public function getCreatedAt(): DateTimeInterface
     {
         return $this->createdAt;
@@ -40,6 +45,21 @@ class Task implements \JsonSerializable
     public function getStatus(): TaskStatus
     {
         return $this->status;
+    }
+
+    public function setStatus(TaskStatus $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function getAssignedUserId(): UserId
+    {
+        return $this->assignedUserId;
+    }
+
+    public function setAssignedUserId(UserId $assignedUserId): void
+    {
+        $this->assignedUserId = $assignedUserId;
     }
 
     public function jsonSerialize()

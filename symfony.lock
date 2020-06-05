@@ -81,6 +81,9 @@
     "doctrine/reflection": {
         "version": "1.2.1"
     },
+    "egulias/email-validator": {
+        "version": "2.1.17"
+    },
     "exsyst/swagger": {
         "version": "v0.4.1"
     },
@@ -333,6 +336,15 @@
             "./src/Kernel.php"
         ]
     },
+    "symfony/google-mailer": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.4",
+            "ref": "f8fd4ddb9b477510f8f4bce2b9c054ab428c0120"
+        }
+    },
     "symfony/http-foundation": {
         "version": "v5.0.5"
     },
@@ -341,6 +353,18 @@
     },
     "symfony/inflector": {
         "version": "v5.0.8"
+    },
+    "symfony/mailer": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "15658c2a0176cda2e7dba66276a2030b52bd81b2"
+        },
+        "files": [
+            "./config/packages/mailer.yaml"
+        ]
     },
     "symfony/maker-bundle": {
         "version": "1.0",
