@@ -4,7 +4,8 @@
 namespace App\Module\User\Infrastructure\Persistence\Doctrine;
 
 
-use App\Module\User\Domain\SharedKernel\UserId;
+use App\Module\Email\Domain\SharedKernel\ValueObject\Email;
+use App\Module\User\Domain\SharedKernel\ValueObject\UserId;
 use App\Module\User\Domain\Entity\User;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -22,17 +23,22 @@ class UserDoctrine
 {
     /**
      * @Id
-     * @Column(type="integer", options={"unsigned": true})
-     * @GeneratedValue
+     * @Column(type="User.UserId")
+     * @GeneratedValue(strategy="AUTO")
      */
-    private int $id;
+    private UserId $id;
 
     /**
      * @Column(type="string")
      */
     private string $name;
 
-    public function getId(): int
+    /**
+     * @Column(type="Email.Email")
+     */
+    private Email $email;
+
+    public function getId(): UserId
     {
         return $this->id;
     }
@@ -48,18 +54,39 @@ class UserDoctrine
         return $this;
     }
 
+    public function getEmail(): Email
+    {
+        return $this->email;
+    }
+
+    public function setEmail(Email $email): self
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    public function populateFromDomain(User $domain): self
+    {
+        $this->name = $domain->getName();
+        $this->email = $domain->getEmail();
+        return $this;
+    }
+
     public static function fromDomain(User $domain): self
     {
         $doctrine = new self();
-        $doctrine->id = $domain->getId()->getRaw();
+        $doctrine->id = $domain->getId();
         return $doctrine
-            ->setName($domain->getName());
+            ->setName($domain->getName())
+            ->setEmail($domain->getEmail());
     }
 
     public function toDomain(): User
     {
         return new User(
-            UserId::create($this->getId()),
-            $this->getName());
+            $this->getId(),
+            $this->getName(),
+            $this->getEmail()
+        );
     }
 }

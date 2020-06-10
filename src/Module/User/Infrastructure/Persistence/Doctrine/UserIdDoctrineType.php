@@ -4,41 +4,21 @@
 namespace App\Module\User\Infrastructure\Persistence\Doctrine;
 
 
-use App\Module\User\Domain\SharedKernel\UserId;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Type;
+use App\Core\Doctrine\Type\IntIdDoctrineType;
+use App\Core\Domain\IntValue;
+use App\Module\User\Domain\SharedKernel\ValueObject\UserId;
 
-class UserIdDoctrineType extends Type
+class UserIdDoctrineType extends IntIdDoctrineType
 {
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
-    {
-        return $platform->getIntegerTypeDeclarationSQL([
-            "unsigned" => true
-        ]);
-    }
+    public const NAME = "User.UserId";
 
-    /**
-     * @param int $value
-     * @param AbstractPlatform $platform
-     * @return UserId
-     */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    protected function createFromValue(int $value): IntValue
     {
-        return UserId::create($value);
-    }
-
-    /**
-     * @param UserId $value
-     * @param AbstractPlatform $platform
-     * @return int
-     */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
-    {
-        return $value->getRaw();
+        return $value === 0 ? UserId::emptyValue() : UserId::create($value);
     }
 
     public function getName()
     {
-        return "User.UserId";
+        return self::NAME;
     }
 }

@@ -1,0 +1,4 @@
+# Your gmail account to tests(need enable less secure apps)
+MAILER_DSN=gmail://<username>:<password>!@default
+# Local part of your gmail username(part before '@')
+NOTIFICATION_FROM_EMAIL=<username-local-part>+notification@gmail.com
