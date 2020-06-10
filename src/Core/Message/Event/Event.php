@@ -4,7 +4,9 @@
 namespace App\Core\Message\Event;
 
 
-interface Event
+use App\Core\Message\Message;
+
+abstract class Event extends Message
 {
 
 }

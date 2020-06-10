@@ -4,25 +4,40 @@
 namespace App\Module\TodoList\Domain\Entity;
 
 
+use App\Module\TodoList\Domain\SharedKernel\ValueObject\TaskId;
 use App\Module\TodoList\Domain\ValueObject\TaskStatus;
+use App\Module\User\Domain\SharedKernel\ValueObject\UserId;
 use DateTimeInterface;
 
 class Task implements \JsonSerializable
 {
-    private int $id;
+    private TaskId $id;
     private string $name;
     private DateTimeInterface $createdAt;
     private TaskStatus $status;
+    private UserId $assignedUserId;
 
-    public function __construct(int $id, string $name, DateTimeInterface $createdAt, TaskStatus $status)
+    public function __construct(TaskId $id, string $name, DateTimeInterface $createdAt, TaskStatus $status, UserId $assignedUserId)
     {
         $this->id = $id;
         $this->name = $name;
         $this->createdAt = $createdAt;
         $this->status = $status;
+        $this->assignedUserId = $assignedUserId;
     }
 
-    public function getId(): int
+    public static function createNew(string $name)
+    {
+        return new self(
+            TaskId::emptyValue(),
+            $name,
+            \DateTimeImmutable::createFromFormat("U", time()),
+            TaskStatus::TODO(),
+            UserId::emptyValue()
+        );
+    }
+
+    public function getId(): TaskId
     {
         return $this->id;
     }
@@ -30,6 +45,11 @@ class Task implements \JsonSerializable
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 
     public function getCreatedAt(): DateTimeInterface
@@ -40,6 +60,21 @@ class Task implements \JsonSerializable
     public function getStatus(): TaskStatus
     {
         return $this->status;
+    }
+
+    public function setStatus(TaskStatus $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function getAssignedUserId(): UserId
+    {
+        return $this->assignedUserId;
+    }
+
+    public function setAssignedUserId(UserId $assignedUserId): void
+    {
+        $this->assignedUserId = $assignedUserId;
     }
 
     public function jsonSerialize()

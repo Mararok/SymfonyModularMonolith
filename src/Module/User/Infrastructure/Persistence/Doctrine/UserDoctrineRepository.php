@@ -6,21 +6,36 @@ namespace App\Module\User\Infrastructure\Persistence\Doctrine;
 
 use App\Core\Doctrine\DomainDoctrineRepositoryBase;
 use App\Core\Domain\Exception\NotFoundException;
-use App\Module\User\Domain\SharedKernel\UserId;
+use App\Module\User\Domain\SharedKernel\ValueObject\UserId;
 use App\Module\User\Domain\Entity\User;
 use App\Module\User\Domain\Repository\UserRepository;
 
 class UserDoctrineRepository extends DomainDoctrineRepositoryBase implements UserRepository
 {
 
-    public function create(User $user): void
+    public function saveOrUpdate(User $user): void
     {
         $this->save($user);
     }
 
-    protected function fromDomainEntity($domainEntity)
+    public function getById(UserId $id): User
     {
-        return UserDoctrine::fromDomain($domainEntity);
+        $entity = $this->tryGetById($id);
+        if (!$entity) {
+            throw NotFoundException::create();
+        }
+
+        return $entity;
+    }
+
+    public function exists(UserId $id): bool
+    {
+        return (bool)$this->tryGetById($id);
+    }
+
+    public function delete(User $user): void
+    {
+        $this->deleteEntity($user);
     }
 
     protected function toDomainEntity($doctrineEntity)
@@ -29,18 +44,8 @@ class UserDoctrineRepository extends DomainDoctrineRepositoryBase implements Use
         return $doctrineEntity->toDomain();
     }
 
-    public function findById(UserId $id): User
+    protected function fromDomainEntity($domainEntity)
     {
-        $entity = $this->tryFindById($id);
-        if (!$entity) {
-            throw NotFoundException::create();
-        }
-
-        return $entity;
-    }
-
-    protected function toIdValue($id)
-    {
-        return parent::toIdValue($id);
+        return UserDoctrine::fromDomain($domainEntity);
     }
 }

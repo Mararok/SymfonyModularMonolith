@@ -4,7 +4,9 @@
 namespace App\Core\Message\Command;
 
 
-interface Command
+use App\Core\Message\Message;
+
+abstract class Command extends Message
 {
 
 }

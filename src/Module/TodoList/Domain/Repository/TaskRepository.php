@@ -5,14 +5,15 @@ namespace App\Module\TodoList\Domain\Repository;
 
 
 use App\Module\TodoList\Domain\Entity\Task;
+use App\Module\TodoList\Domain\SharedKernel\ValueObject\TaskId;
 
 interface TaskRepository
 {
-    public function create(Task $task): void;
+    public function saveOrUpdate(Task $task): void;
 
-    /**
-     * @return \Iterator
-     */
-    public function findAll();
-    public function findById(int $id): Task;
+    public function getById(TaskId $id): Task;
+
+    public function getList(): \Iterator;
+
+    public function delete(Task $task): void;
 }

@@ -5,7 +5,9 @@ namespace App\Module\TodoList\Infrastructure\Persistence\Doctrine;
 
 
 use App\Module\TodoList\Domain\Entity\Task;
+use App\Module\TodoList\Domain\SharedKernel\ValueObject\TaskId;
 use App\Module\TodoList\Domain\ValueObject\TaskStatus;
+use App\Module\User\Domain\SharedKernel\ValueObject\UserId;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -22,10 +24,10 @@ class TaskDoctrine
 {
     /**
      * @Id
-     * @Column(type="integer", options={"unsigned": true})
+     * @Column(type="TodoList.TaskId", options={"unsigned": true})
      * @GeneratedValue
      */
-    private int $id;
+    private TaskId $id;
 
     /**
      * @Column(type="string")
@@ -42,7 +44,12 @@ class TaskDoctrine
      */
     private TaskStatus $status;
 
-    public function getId(): int
+    /**
+     * @Column(type="User.UserId")
+     */
+    private UserId $assignedUserId;
+
+    public function getId(): TaskId
     {
         return $this->id;
     }
@@ -80,6 +87,25 @@ class TaskDoctrine
         return $this;
     }
 
+    public function getAssignedUserId(): UserId
+    {
+        return $this->assignedUserId;
+    }
+
+    public function setAssignedUserId(UserId $assignedUserId): TaskDoctrine
+    {
+        $this->assignedUserId = $assignedUserId;
+        return $this;
+    }
+
+    public function populateFromDomain(Task $domain): self
+    {
+        $this->name = $domain->getName();
+        $this->status = $domain->getStatus();
+        $this->assignedUserId = $domain->getAssignedUserId();
+        return $this;
+    }
+
     public static function fromDomain(Task $domain): self
     {
         $doctrine = new self();
@@ -87,7 +113,8 @@ class TaskDoctrine
         return $doctrine
             ->setName($domain->getName())
             ->setCreatedAt($domain->getCreatedAt())
-            ->setStatus($domain->getStatus());
+            ->setStatus($domain->getStatus())
+            ->setAssignedUserId($domain->getAssignedUserId());
     }
 
     public function toDomain(): Task
@@ -96,6 +123,6 @@ class TaskDoctrine
             $this->getId(),
             $this->getName(),
             $this->getCreatedAt(),
-            $this->getStatus());
+            $this->getStatus(), $this->getAssignedUserId());
     }
 }

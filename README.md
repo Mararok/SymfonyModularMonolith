@@ -78,6 +78,14 @@ Należy zainstalować niezbędne narzędzia:
 - make
 - curl
 
+#### Wymagane dane
+Testowe konto smtp(może być gmail) do wysyłki email
+1. Utworzyć env.local
+2. Dodać
+```yaml
+MAILER_DSN=gmail://<username>:<password>@default
+```
+
 #### Make
 
 Przed rozpoczęciem korzystania z make uruchom:

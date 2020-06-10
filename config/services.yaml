@@ -5,6 +5,8 @@ services:
   _defaults:
     autowire: true
     autoconfigure: true
+    bind:
+      $notificationFromEmail: '@core.notification_from_email'
 
   _instanceof:
 
@@ -54,3 +56,6 @@ services:
     resource: '../src/Module/*'
     exclude: '../src/*/{Doctrine/Entity}'
 
+  core.notification_from_email:
+    class: App\Module\Email\Domain\SharedKernel\ValueObject\Email
+    arguments: ['%env(NOTIFICATION_FROM_EMAIL)%']

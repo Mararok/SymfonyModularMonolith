@@ -11,17 +11,18 @@ abstract class DomainDoctrineRepositoryBase extends EntityRepository
      * Persists entity in database
      * @param mixed $domainEntity
      */
-    protected function save($domainEntity): void
+    protected function save(object $domainEntity): void
     {
         try {
-            $this->getEntityManager()->persist($this->fromDomainEntity($domainEntity));
+            $doctrineEntity = $this->fromDomainEntity($domainEntity);
+            $this->getEntityManager()->persist($doctrineEntity);
             $this->getEntityManager()->flush();
         } catch (\Exception $e) {
-            throw DoctrinePersistenceException::create("Doctrine error", $e);
+            throw DoctrinePersistenceException::createFromDoctrine($e);
         }
     }
 
-    public function findAll()
+    public function getList(): \Iterator
     {
         try {
             $doctrineEntities = parent::findAll();
@@ -31,22 +32,33 @@ abstract class DomainDoctrineRepositoryBase extends EntityRepository
             }
             return new \ArrayIterator($domainEntities);
         } catch (\Exception $e) {
-            throw DoctrinePersistenceException::create("Doctrine error", $e);
+            throw DoctrinePersistenceException::createFromDoctrine($e);
         }
     }
 
     /**
      *
-     * @param $id mixed Id of
+     * @param $id mixed Id of entity
      * @return mixed | null
      */
-    protected function tryFindById($id)
+    protected function tryGetById($id)
     {
         try {
-            $doctrineEntity = $this->find($this->toIdValue($id));
+            $doctrineEntity = $this->find($id);
             return $doctrineEntity ? $this->toDomainEntity($doctrineEntity) : null;
         } catch (\Exception $e) {
-            throw DoctrinePersistenceException::create("Doctrine error", $e);
+            throw DoctrinePersistenceException::createFromDoctrine($e);
+        }
+    }
+
+    protected function deleteEntity($entity)
+    {
+        try {
+            $doctrineEntity = $this->fromDomainEntity($entity);
+            $this->getEntityManager()->remove($doctrineEntity);
+            $this->getEntityManager()->flush();
+        } catch (\Exception $e) {
+            throw DoctrinePersistenceException::createFromDoctrine($e);
         }
     }
 
@@ -63,14 +75,4 @@ abstract class DomainDoctrineRepositoryBase extends EntityRepository
      * @return mixed Domain entity
      */
     protected abstract function toDomainEntity($doctrineEntity);
-
-    /**
-     * Converts given id to value(some ids can be complex objects)
-     * @param mixed $id
-     * @return mixed
-     */
-    protected function toIdValue($id)
-    {
-        return $id;
-    }
 }

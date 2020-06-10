@@ -5,9 +5,10 @@ namespace App\Module\User\Infrastructure\Rest\Controller;
 use App\Core\Account\AccountContextController;
 use App\Core\Domain\Exception\NotFoundException;
 use App\Core\Rest\Controller\CommandQueryController;
-use App\Module\User\Application\Command\User\Create\CreateCommand;
-use App\Module\User\Application\Query\User\FindAll\FindAllQuery;
-use App\Module\User\Application\Query\User\FindById\FindByIdQuery;
+use App\Module\User\Application\Command\User\CreateCommand;
+use App\Module\User\Application\Query\User\GetListQuery;
+use App\Module\User\Application\Query\User\GetByIdQuery;
+use App\Module\User\Domain\SharedKernel\ValueObject\UserId;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,7 +31,8 @@ class UserController extends CommandQueryController implements AccountContextCon
      *      required=true,
      *      @SWG\Schema(
      *          type="object",
-     *          @SWG\Property(property="name", type="string", example="test_name")
+     *          @SWG\Property(property="name", type="string", example="test_name"),
+     *          @SWG\Property(property="email", type="string", example="test@test.com")
      *      )
      * )
      * @SWG\Response(
@@ -42,12 +44,15 @@ class UserController extends CommandQueryController implements AccountContextCon
      */
     public function create(Request $request): Response
     {
-        $this->executeCommand(new CreateCommand($request->request->get("name")));
+        $this->executeCommand(new CreateCommand(
+            $request->request->get("name", ""),
+            $request->request->get("email", "")
+        ));
         return Response::create("", Response::HTTP_CREATED);
     }
 
     /**
-     * @Route("", name="list", methods={"GET"})
+     * @Route("", name="get_list", methods={"GET"})
      * @SWG\Response(
      *      response=200,
      *      description="Returns entity list",
@@ -55,9 +60,9 @@ class UserController extends CommandQueryController implements AccountContextCon
      * @return Response
      * @throws Throwable
      */
-    public function list(): Response
+    public function getList(): Response
     {
-        $result = $this->executeQuery(new FindAllQuery());
+        $result = $this->executeQuery(new GetListQuery());
         $entities = iterator_to_array($result);
         return $this->jsonResponse($entities);
     }
@@ -79,11 +84,7 @@ class UserController extends CommandQueryController implements AccountContextCon
      */
     public function getById(int $id): Response
     {
-        $entity = $this->executeQuery(new FindByIdQuery($id));
-        if (!$entity) {
-            throw NotFoundException::create();
-        }
-
+        $entity = $this->executeQuery(new GetByIdQuery(UserId::create($id)));
         return $this->jsonResponse($entity);
     }
 }
