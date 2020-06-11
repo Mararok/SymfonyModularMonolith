@@ -9,7 +9,7 @@ return [
         TaskStatus::class
     ],
     "customTypes" => [
-        TaskIdDoctrineType::NAME => TaskIdDoctrineType::class
+        TaskIdDoctrineType::class
     ],
 ];
 

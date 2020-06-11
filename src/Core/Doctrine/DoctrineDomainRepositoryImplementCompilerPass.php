@@ -36,6 +36,6 @@ class DoctrineDomainRepositoryImplementCompilerPass implements CompilerPassInter
 
     private function generateDoctrineEntityName(string $moduleName, string $domainEntityName)
     {
-        return 'App\\Module\\' . $moduleName . '\\Infrastructure\\Persistence\Doctrine\\' . $domainEntityName . "Doctrine";
+        return 'App\\Module\\' . $moduleName . '\\Domain\\Entity\\' . $domainEntityName;
     }
 }

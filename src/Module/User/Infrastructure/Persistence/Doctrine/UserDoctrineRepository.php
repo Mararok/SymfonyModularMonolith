@@ -37,15 +37,4 @@ class UserDoctrineRepository extends DomainDoctrineRepositoryBase implements Use
     {
         $this->deleteEntity($user);
     }
-
-    protected function toDomainEntity($doctrineEntity)
-    {
-        /** @var UserDoctrine $doctrineEntity */
-        return $doctrineEntity->toDomain();
-    }
-
-    protected function fromDomainEntity($domainEntity)
-    {
-        return UserDoctrine::fromDomain($domainEntity);
-    }
 }

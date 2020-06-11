@@ -92,13 +92,13 @@ class ModularDoctrineConfigLoader
         return $modules;
     }
 
-    private function generateModuleMapping($moduleName): array
+    private function generateModuleMapping(string $moduleName): array
     {
         return [
-            'type' => 'annotation',
+            'type' => 'xml',
             'dir' => '%kernel.project_dir%/src/Module/' . $moduleName . '/Infrastructure/Persistence/Doctrine',
             'is_bundle' => false,
-            'prefix' => 'App\\Module\\' . $moduleName . '\\Infrastructure\\Persistence\\Doctrine',
+            'prefix' => 'App\\Module\\' . $moduleName . '\\Domain\\Entity',
             'alias' => $moduleName,
         ];
     }

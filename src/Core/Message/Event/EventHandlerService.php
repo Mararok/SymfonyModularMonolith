@@ -9,7 +9,7 @@ use App\Core\Message\MessageHandlerService;
 
 abstract class EventHandlerService extends MessageHandlerService implements EventHandler
 {
-    private const TYPE_SUFFIX_LENGTH = 5;
+    private const TYPE_SUFFIX_LENGTH = 5; // *Event
 
     protected static function getHandleMethodName(string $typeClass): string
     {
