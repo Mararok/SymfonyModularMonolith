@@ -33,22 +33,37 @@ Serce każdego modułu zawiera logikę biznesową nie powiązaną z żadnym fram
 ## Application
 Symfony w projekcie jest tak skonfigurowane, że z automatu zarejestruje wszystkie handlery komend, zapytań i eventów dla danego modułu, muszą tylko zaimplementować odpowiednie interfejsy markerów z Core.
 
-- **Command**  - zawiera wszystkie komendy do domeny, które można wykonać w danym module, struktura: podfolder z nazwą komendy i klasy:
+- **Command**  - zawiera wszystkie komendy do domeny, które można wykonać w danym module, struktura:
+  - złożone komendy mają podfolder z nazwą komendy i odpowiednią klasę komendy i handlera do niej
   - **\<nazwa-komendy>Command**
     - implementuje: App\Core\Message\Command\Command,
     - zawiera dane do wykonania komendy,
     - immutable - tylko gettery
   - **\<nazwa-komendy>CommandHandler**
     - implementuje: **App\Core\Message\Command\CommandHandler**
-    - **__invoke(<\nazwa-komendy>Command $command): void**
-- **Query** - zawiera wszystkie zapytania do domeny, które można zadać w danym module, struktura: podfolder z nazwą komendy i klasy:
+    - **__invoke(\<nazwa-komendy>Command $command): void**
+  - **BasicCommandHandlerService**
+    - implementuje: **App\Core\Message\Command\CommandHandlerService**
+    - powinien zawierać mało złożone komendy(takie których logika jest w miarę krótka, np. tylko zapis encji do bazy + ewentualnie wysłanie zdarzenia)
+- **Query** - zawiera wszystkie zapytania do domeny, które można zadać w danym module
+  - złożone zapytania mają podfolder z nazwą zapytania i odpowiednią klasę zapytania i handlera do niego
   - **\<nazwa-zapytania>Query**
     - implementuje: **App\Core\Message\Query\Query**,
     - zawiera dane do wykonania zapytania,
     - immutable - tylko gettery
   - **\<nazwa-zapytania>QueryHandler**
     - implementuje: **App\Core\Message\Query\QueryHandler**
-    - **__invoke(<\nazwa-zapytania>Query $query): void**
+    - **__invoke(\<nazwa-zapytania>Query $query): void**
+  - **BasicCommandHandlerService**
+      - implementuje: **App\Core\Message\Query\QueryHandlerService**
+      - powinien zawierać mało złożone zapytania(takie których logika jest w miarę krótka, np. tylko jakieś pobranie po id)
+- **Event** - zawiera wszystkie handlery zdarzeń dla domeny
+  - **\<nazwa-zapytania>EventHandler**
+    - implementuje: **App\Core\Message\Event\EventHandler**
+    - **__invoke(\<nazwa-zdarzenia>Event $event): void**
+  - **BasicCommandHandlerService**
+      - implementuje: **App\Core\Message\Event\EventHandlerService**
+      - powinien zawierać(takie których logika jest w miarę krótka, np. tylko jakieś pobranie po id)
 
 ## Infrastructure
 Zawiera wszystko co potrzebne do kontaktu ze światem zewnętrznym(obsługa bazy danych, rest api).
@@ -78,13 +93,9 @@ Należy zainstalować niezbędne narzędzia:
 - make
 - curl
 
-#### Wymagane dane
-Testowe konto smtp(może być gmail) do wysyłki email
-1. Utworzyć env.local
-2. Dodać
-```yaml
-MAILER_DSN=gmail://<username>:<password>@default
-```
+#### Wymagane dane środowiskowe
+* Testowe konto smtp(może być gmail - symfony ma już zaciągnięte zależności) do wysyłki email
+* Skopiować template_env.local pod env.local i wpisać dane
 
 #### Make
 
@@ -138,6 +149,12 @@ Aby uruchomić serwis subprojektu należy wywołać:
     make SUBPROJECT=<subproject> deploy_service
 ```
 
+## Uruchamianie i testowanie przykładu
+1. środowisko
+```bash
+    make test_init
+    make sf_start_local_server
+    php bin/console app:account:doctrine:create --account-id 1
+```
+2. Interaktywne api znajduje się po uruchomieniu pod adresem **http://127.0.0.1:8000/api/doc**
 
-## Symfony console
-Projekt zawiera dodatkowe komendy Symfony, dostępne pod prefiksem app:

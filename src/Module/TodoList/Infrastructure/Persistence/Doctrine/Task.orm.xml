@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity
+            name="App\Module\TodoList\Domain\Entity\Task"
+            table="TodoList_Tasks"
+            repository-class="App\Module\TodoList\Infrastructure\Persistence\Doctrine\TaskDoctrineRepository"
+    >
+        <id name="id" type="TodoList.TaskId" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="name" type="string" length="255"/>
+        <field name="createdAt" type="datetime_immutable"/>
+        <field name="status" type="TodoList.TaskStatus"/>
+        <field name="assignedUserId"  type="User.UserId"/>
+    </entity>
+
+</doctrine-mapping>

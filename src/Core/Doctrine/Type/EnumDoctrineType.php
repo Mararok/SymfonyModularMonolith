@@ -5,9 +5,10 @@ namespace App\Core\Doctrine;
 
 
 use Acelaya\Doctrine\Type\PhpEnumType;
+use App\Core\Doctrine\Type\DoctrineType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
-class DoctrineEnumType extends PhpEnumType
+class EnumDoctrineType extends PhpEnumType implements DoctrineType
 {
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
