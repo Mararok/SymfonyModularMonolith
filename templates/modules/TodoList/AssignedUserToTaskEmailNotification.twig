@@ -1,17 +1,17 @@
 {% block subject %}
-    You were assigned to [ {{ task.id }} ] {{ task.name }}
+    You have been assigned to [ {{ task.id }} ] {{ task.name }}
 {% endblock %}
 
 {% block text %}
     Hello, {{ user.name }}
-    You were assigned to task [ {{ task.id }} ] {{ task.name }}
+    You have been assigned to task [ {{ task.id }} ] {{ task.name }}
 {% endblock %}
 
 {% block html %}
     <h3>Hello, {{ user.name }}</h3>
 
     <p>
-        You were assigned to task [ {{ task.id }} ] {{ task.name }}
+        You have been assigned to task [ {{ task.id }} ] {{ task.name }}
     </p>
 {% endblock %}
 
