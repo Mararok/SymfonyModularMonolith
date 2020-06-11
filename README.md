@@ -35,51 +35,63 @@ Symfony w projekcie jest tak skonfigurowane, że z automatu zarejestruje wszystk
 
 - **Command**  - zawiera wszystkie komendy do domeny, które można wykonać w danym module, struktura:
   - złożone komendy mają podfolder z nazwą komendy i odpowiednią klasę komendy i handlera do niej
-  - **\<nazwa-komendy>Command**
+  - **[nazwa]Command**
     - implementuje: App\Core\Message\Command\Command,
     - zawiera dane do wykonania komendy,
     - immutable - tylko gettery
-  - **\<nazwa-komendy>CommandHandler**
+  - **[nazwa]CommandHandler**
     - implementuje: **App\Core\Message\Command\CommandHandler**
-    - **__invoke(\<nazwa-komendy>Command $command): void**
+    - **__invoke([nazwa]Command $command): void**
   - **BasicCommandHandlerService**
     - implementuje: **App\Core\Message\Command\CommandHandlerService**
-    - powinien zawierać mało złożone komendy(takie których logika jest w miarę krótka, np. tylko zapis encji do bazy + ewentualnie wysłanie zdarzenia)
+    - powinien zawierać prostesze komendy
+    - **handle[nazwa bez suffixa]\([nazwa]Command $command): void**
 - **Query** - zawiera wszystkie zapytania do domeny, które można zadać w danym module
   - złożone zapytania mają podfolder z nazwą zapytania i odpowiednią klasę zapytania i handlera do niego
-  - **\<nazwa-zapytania>Query**
+  - **[nazwa]Query**
     - implementuje: **App\Core\Message\Query\Query**,
     - zawiera dane do wykonania zapytania,
     - immutable - tylko gettery
-  - **\<nazwa-zapytania>QueryHandler**
+  - **[nazwa]QueryHandler**
     - implementuje: **App\Core\Message\Query\QueryHandler**
-    - **__invoke(\<nazwa-zapytania>Query $query): void**
-  - **BasicCommandHandlerService**
+    - **__invoke([nazwa]Query $query): void**
+  - **BasicQueryHandlerService**
       - implementuje: **App\Core\Message\Query\QueryHandlerService**
-      - powinien zawierać mało złożone zapytania(takie których logika jest w miarę krótka, np. tylko jakieś pobranie po id)
+      - powinien zawierać prostesze zapytania
+      - **handle[nazwa bez suffixa]\([nazwa]Query $query): mixed**
 - **Event** - zawiera wszystkie handlery zdarzeń dla domeny
-  - **\<nazwa-zapytania>EventHandler**
+  - **[nazwa]EventHandler**
     - implementuje: **App\Core\Message\Event\EventHandler**
-    - **__invoke(\<nazwa-zdarzenia>Event $event): void**
-  - **BasicCommandHandlerService**
+    - **__invoke([nazwa]Event $event): void**
+  - **BasicEventHandlerService**
       - implementuje: **App\Core\Message\Event\EventHandlerService**
-      - powinien zawierać(takie których logika jest w miarę krótka, np. tylko jakieś pobranie po id)
+      - powinien zawierać proste handlery zdarzeń
+      - handle[nazwa bez suffixa]\([nazwa]Event $event): void**
 
 ## Infrastructure
 Zawiera wszystko co potrzebne do kontaktu ze światem zewnętrznym(obsługa bazy danych, rest api).
+### REST
 Moduły które udostępniają REST api komunikują się z domeną poprzez komendy i zapytania, kontroler musi:
 - znajdować się w **App\Module\<nazwa-modułu>\Infrastructure\Rest\Controller**
 - dziedziczyć po wybranej bazie kontrolera z **App\Core\Rest\Controller**
 
 Symfony jest tak skonfigurowane że automatycznie zarejestruje routy kontrolera na podstawie markera: **App\Core\Rest\Controller\Controller**
 
+### Doctrine
+- wszyskto co związane z Doctrinem wędruje do podkatalogu **Persistence\Doctrine**
+- Dla uproszczenia mapowania zastosowano xmla.
+  - format nazwy pliku: **[nazwa-encji].orm.xml**
+- Można implementować własne typy, które będą potem rejestrowane poprzez odpowiedni wpis w configu modułu.
+- Nazwy tabel posiadają prefix identyfikatora modułu.
+- Repozytoria mogą korzystać z pomocniczych bazowych klas z Core.
 ## Config
 Część rzeczy, które da się zrobić ogólnie dla wszystkich modułów  jak automatycznie rejestrowanie kontrolerów są robione w domyślnym Symfonowym config/services.yaml.
 Elementy specyficzne dla danego modułu znajdują się w **config/modules/<nazwa-modułu>**:
 - **services.yaml**  - importowany w głównych serwisach
 - **doctrine.php**  - zawiera dodatkową konfigurację Doctrina dla modułu
   - **isAccountModule** - definiuje czy moduł działa w kontekście konta - wtedy rejestrowane jest mapowania dla EntityManagera od kont
-  - **enumTypes** - lista klas które należy zarejestrować jak typ enum w Doctrinie
+  - **enumTypes** - lista klas które należy zarejestrować jako typ enum w Doctrinie
+  - **customTypes** - lista klas które należy zarejestrować jako typ w Doctrinie
 
 
 ## Przygotowanie środowiska
