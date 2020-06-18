@@ -4,6 +4,7 @@
 namespace App\Core\Doctrine;
 
 
+use App\Core\Doctrine\Type\EnumDoctrineType;
 use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\DBAL\Types\Type;
 
