@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Core\Doctrine;
+namespace App\Core\Doctrine\Type;
 
 
 use Acelaya\Doctrine\Type\PhpEnumType;
