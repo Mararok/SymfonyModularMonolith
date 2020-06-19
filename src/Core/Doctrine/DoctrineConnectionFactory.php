@@ -30,7 +30,7 @@ class DoctrineConnectionFactory extends ConnectionFactory
     {
         if (isset($config["enumTypes"])) {
             foreach ($config["enumTypes"] as $typeClass) {
-                $typeName = self::createTypeName($moduleId, basename($typeClass));
+                $typeName = self::createTypeName($moduleId, substr($typeClass, strrpos($typeClass, "\\") + 1));
                 if (!EnumDoctrineType::hasType($typeName)) {
                     EnumDoctrineType::registerEnumType($typeName, $typeClass);
                 }
@@ -42,7 +42,7 @@ class DoctrineConnectionFactory extends ConnectionFactory
     {
         if (isset($config["customTypes"])) {
             foreach ($config["customTypes"] as $typeClass) {
-                $typeName = self::createTypeName($moduleId, substr(basename($typeClass), 0, -self::TYPE_SUFFIX_LENGTH));
+                $typeName = self::createTypeName($moduleId, substr($typeClass, strrpos($typeClass, "\\") + 1, -self::TYPE_SUFFIX_LENGTH));
                 if (!Type::hasType($typeName)) {
                     Type::addType($typeName, $typeClass);
                 }
