@@ -12,6 +12,6 @@ abstract class CommandHandlerService extends MessageHandlerService implements Co
 
     protected static function getHandleMethodName(string $typeClass): string
     {
-        return "handle" . substr(basename($typeClass), 0, -self::TYPE_SUFFIX_LENGTH);
+        return "handle" . substr($typeClass, strrpos($typeClass, "\\") + 1, -self::TYPE_SUFFIX_LENGTH);
     }
 }
